@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  noteshare_mysql:
+    image: mysql:5.7.20
+    restart: always
+    volumes:
+      - noteshare_mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: noteshare
+      MYSQL_USER: noteshare
+      MYSQL_PASSWORD: noteshare
+    ports:
+      - "3306:3306"
+
+volumes:
+  noteshare_mysql_data:
