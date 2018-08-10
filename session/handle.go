@@ -27,11 +27,7 @@ func Authenticate(s Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		cookie, err := r.Cookie(config.SessionCookieName)
 		if err != nil {
-			log.RespondJSON(
-				w,
-				`{"success":false,"message":"No authentication token provided"}`,
-				http.StatusUnauthorized,
-			)
+			log.RespondJSON(w, `{}`, http.StatusUnauthorized)
 			return
 		}
 
@@ -39,11 +35,7 @@ func Authenticate(s Handle) httprouter.Handle {
 		session := Session{}
 		err = session.Parse(token)
 		if err != nil {
-			log.RespondJSON(
-				w,
-				`{"success":false,"message":"Invalid authentication token provided"}`,
-				http.StatusUnauthorized,
-			)
+			log.RespondJSON(w, `{}`, http.StatusUnauthorized)
 			return
 		}
 

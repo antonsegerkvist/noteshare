@@ -9,7 +9,6 @@ import (
 
 // Session contains all session claim information.
 type Session struct {
-	IsAdmin bool `json:"isAdmin"`
 	jwt.StandardClaims
 }
 

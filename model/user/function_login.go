@@ -12,6 +12,7 @@ import (
 // the login model data accosiated with it.
 //
 func PerformLogin(email, password string) (*ModelLogin, error) {
+
 	const query = `
 		select c_id from t_user
 		where c_email = ? and c_password_hash = SHA2(CONCAT(c_password_salt, ?), 256)
@@ -42,4 +43,5 @@ func PerformLogin(email, password string) (*ModelLogin, error) {
 	}
 
 	return ret, nil
+
 }

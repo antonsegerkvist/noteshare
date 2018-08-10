@@ -31,7 +31,7 @@ func Free() {
 	database.Close()
 }
 
-// Open gets the database handler to the mysql server.
+// Open gets a database handler to the mysql server.
 func Open() *sql.DB {
 	return database
 }

@@ -1,4 +1,4 @@
-package login
+package check
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ import (
 func Options(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	if config.BuildDebug == true {
-		fmt.Println(`==> OPTIONS: /service/api/v1/login`)
+		fmt.Println(`==> OPTIONS: /service/api/v1/login/check`)
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")

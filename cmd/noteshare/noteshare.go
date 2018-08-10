@@ -7,11 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(``)
 	fmt.Println(`==> Starting noteshare server`)
-
 	noteshare.Run()
-
-	fmt.Println(`==> Ending`)
-	fmt.Println(``)
+	fmt.Println(`==> Ending noteshare server`)
 }

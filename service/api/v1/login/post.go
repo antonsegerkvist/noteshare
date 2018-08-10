@@ -44,7 +44,7 @@ func (post *PostData) ParseRequestBody(request *http.Request) error {
 func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	if config.BuildDebug == true {
-		fmt.Println(`==> POST: service/api/v1/login`)
+		fmt.Println(`==> POST: /service/api/v1/login`)
 	}
 
 	if r.Header.Get("Content-Type") != "application/json" {
@@ -62,13 +62,13 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	email, password := postData.Email, postData.Password
 	loginData, err := user.PerformLogin(email, password)
 	if err == user.ErrShortEmail {
-		log.RespondJSON(w, `{}`, http.StatusBadRequest)
+		log.RespondJSON(w, `{}`, http.StatusPreconditionFailed)
 		return
 	} else if err == user.ErrLongEmail {
-		log.RespondJSON(w, `{}`, http.StatusBadRequest)
+		log.RespondJSON(w, `{}`, http.StatusPreconditionFailed)
 		return
 	} else if err == user.ErrShortPassword {
-		log.RespondJSON(w, `{}`, http.StatusBadRequest)
+		log.RespondJSON(w, `{}`, http.StatusPreconditionFailed)
 		return
 	} else if err == user.ErrUserNotFound {
 		log.RespondJSON(w, `{}`, http.StatusNotFound)
@@ -83,7 +83,7 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			Id:        strconv.FormatUint(loginData.UserID, 10),
 			IssuedAt:  time.Now().Unix(),
 			ExpiresAt: time.Now().Unix() + int64(config.SessionTime),
-			Issuer:    "myowork",
+			Issuer:    "noteshare",
 		},
 	}
 
@@ -92,7 +92,7 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			Id:        strconv.FormatUint(loginData.UserID, 10),
 			IssuedAt:  time.Now().Unix(),
 			ExpiresAt: time.Now().Unix() + int64(config.RefreshTime),
-			Issuer:    "myowork",
+			Issuer:    "noteshare",
 		},
 	}
 
