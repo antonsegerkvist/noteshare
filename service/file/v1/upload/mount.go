@@ -1,4 +1,4 @@
-package file
+package upload
 
 import "github.com/julienschmidt/httprouter"
 
