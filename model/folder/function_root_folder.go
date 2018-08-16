@@ -8,9 +8,9 @@ import (
 )
 
 //
-// AddFolderFromUserID adds a root folder to the database.
+// AddRootFolderFromUserID adds a root folder to the database.
 //
-func AddFolderFromUserID(name string, userID uint64) error {
+func AddRootFolderFromUserID(name string, userID uint64) error {
 
 	const insertQuery = `
 		insert into t_folder (c_name)
@@ -74,9 +74,9 @@ func AddFolderFromUserID(name string, userID uint64) error {
 }
 
 //
-// GetFoldersFromUserID returns a list of all root folders.
+// GetRootFoldersFromUserID returns a list of all root folders.
 //
-func GetFoldersFromUserID(userID uint64) (*[]ModelFolder, error) {
+func GetRootFoldersFromUserID(userID uint64) (*[]ModelFolder, error) {
 
 	const query = `
 		select f.c_id, f.c_name

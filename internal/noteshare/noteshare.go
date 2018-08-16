@@ -7,6 +7,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 
 	serviceapiv1folder "github.com/noteshare/service/api/v1/folder"
+	serviceapiv1folderbyparentid "github.com/noteshare/service/api/v1/folder/by/parent/id"
 
 	serviceapiv1login "github.com/noteshare/service/api/v1/login"
 	serviceapiv1logincheck "github.com/noteshare/service/api/v1/login/check"
@@ -24,6 +25,7 @@ func Run() {
 	router := httprouter.New()
 
 	serviceapiv1folder.Mount(router)
+	serviceapiv1folderbyparentid.Mount(router)
 
 	serviceapiv1login.Mount(router)
 	serviceapiv1logincheck.Mount(router)

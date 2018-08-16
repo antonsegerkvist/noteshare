@@ -49,7 +49,7 @@ var Post = session.Authenticate(
 
 		userID, err := strconv.ParseUint(s.Id, 10, 64)
 		if err != nil {
-			log.RespondJSON(w, `{}`, http.StatusBadRequest)
+			log.RespondJSON(w, `{}`, http.StatusUnauthorized)
 			return
 		}
 
@@ -60,7 +60,7 @@ var Post = session.Authenticate(
 			return
 		}
 
-		err = folder.AddFolderFromUserID(requestData.Name, userID)
+		err = folder.AddRootFolderFromUserID(requestData.Name, userID)
 		if err == folder.ErrShortName {
 			log.RespondJSON(w, `{}`, http.StatusPreconditionFailed)
 			return
