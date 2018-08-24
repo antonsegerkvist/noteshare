@@ -1,4 +1,4 @@
-package id
+package file
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
-	"github.com/noteshare/model/folder"
+	"github.com/noteshare/model/file"
 	"github.com/noteshare/session"
 )
 
@@ -17,17 +17,17 @@ import (
 // ResponseData contains the fields of the response.
 //
 type ResponseData struct {
-	Folders []folder.ModelFolder `json:"folders"`
+	Files []file.ModelFile `json:"files"`
 }
 
 //
-// Get returns the child folders of folderID that the user has access to.
+// Get returns the root folders that the user has access to.
 //
 var Get = session.Authenticate(
-	func(w http.ResponseWriter, r *http.Request, p httprouter.Params, s session.Session) {
+	func(w http.ResponseWriter, r *http.Request, _ httprouter.Params, s session.Session) {
 
 		if config.BuildDebug == true {
-			fmt.Println(`==> GET: /service/api/v1/folder/by/parent/id/:fid`)
+			fmt.Println(`==> GET: /service/api/v1/file`)
 		}
 
 		userID, err := strconv.ParseUint(s.Id, 10, 64)
@@ -36,19 +36,13 @@ var Get = session.Authenticate(
 			return
 		}
 
-		folderID, err := strconv.ParseUint(p.ByName("fid"), 10, 64)
-		if err != nil {
-			log.RespondJSON(w, `{}`, http.StatusBadRequest)
-			return
-		}
-
-		folders, err := folder.GetChildFoldersForFolderIDFromUserID(folderID, userID)
+		files, err := file.GetRootFilesFromUserID(userID)
 		if err != nil {
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 			return
 		}
 
-		responseData := ResponseData{Folders: *folders}
+		responseData := ResponseData{Files: *files}
 		jsonBody, err := json.Marshal(responseData)
 		if err != nil {
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)

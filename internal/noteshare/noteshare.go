@@ -6,15 +6,14 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 
-	serviceapiv1folder "github.com/noteshare/service/api/v1/folder"
-	serviceapiv1folderbyparentid "github.com/noteshare/service/api/v1/folder/by/parent/id"
+	service_api_v1_file "github.com/noteshare/service/api/v1/file"
 
-	serviceapiv1login "github.com/noteshare/service/api/v1/login"
-	serviceapiv1logincheck "github.com/noteshare/service/api/v1/login/check"
-	serviceapiv1loginrenew "github.com/noteshare/service/api/v1/login/renew"
+	service_api_v1_login "github.com/noteshare/service/api/v1/login"
+	service_api_v1_login_check "github.com/noteshare/service/api/v1/login/check"
+	service_api_v1_login_renew "github.com/noteshare/service/api/v1/login/renew"
 
-	servicefilev1download "github.com/noteshare/service/file/v1/download"
-	servicefilev1upload "github.com/noteshare/service/file/v1/upload"
+	service_file_v1_download "github.com/noteshare/service/file/v1/download"
+	service_file_v1_upload "github.com/noteshare/service/file/v1/upload"
 )
 
 //
@@ -24,15 +23,14 @@ func Run() {
 
 	router := httprouter.New()
 
-	serviceapiv1folder.Mount(router)
-	serviceapiv1folderbyparentid.Mount(router)
+	service_api_v1_file.Mount(router)
 
-	serviceapiv1login.Mount(router)
-	serviceapiv1logincheck.Mount(router)
-	serviceapiv1loginrenew.Mount(router)
+	service_api_v1_login.Mount(router)
+	service_api_v1_login_check.Mount(router)
+	service_api_v1_login_renew.Mount(router)
 
-	servicefilev1download.Mount(router)
-	servicefilev1upload.Mount(router)
+	service_file_v1_download.Mount(router)
+	service_file_v1_upload.Mount(router)
 
 	log.Fatal(http.ListenAndServe(":8081", router))
 

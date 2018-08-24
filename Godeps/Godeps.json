@@ -8,18 +8,18 @@
 	"Deps": [
 		{
 			"ImportPath": "github.com/dgrijalva/jwt-go",
-			"Comment": "v3.1.0",
-			"Rev": "dbeaa9332f19a944acb5736b4456cfcc02140e29"
+			"Comment": "v3.2.0-2-g0b96aaa",
+			"Rev": "0b96aaa707760d6ab28d9b9d1913ff5993328bae"
 		},
 		{
 			"ImportPath": "github.com/go-sql-driver/mysql",
-			"Comment": "v1.3-54-gbc14601",
-			"Rev": "bc14601d1bd56421dd60f561e6052c9ed77f9daf"
+			"Comment": "v1.4.0-5-g99ff426",
+			"Rev": "99ff426eb706cffe92ff3d058e168b278cabf7c7"
 		},
 		{
 			"ImportPath": "github.com/julienschmidt/httprouter",
-			"Comment": "v1.1-55-ge1b9828",
-			"Rev": "e1b9828bc9e5904baec057a154c09ca40fe7fae0"
+			"Comment": "v1.1-64-g348b672",
+			"Rev": "348b672cd90d8190f8240323e372ecd1e66b59dc"
 		}
 	]
 }
