@@ -11,9 +11,9 @@ func AddRootMultiplexerFromUserID(file *ModelAddFile, userID uint64) (uint64, er
 	case 2:
 		return AddRootFileFromUserID(file, userID)
 	case 3:
-		break
+		return AddRootWeakLinkFromUserID(file, userID)
 	case 4:
-		break
+		return AddRootHardLinkFromUserID(file, userID)
 	}
 	return 0, ErrUnknownFileType
 }
