@@ -48,6 +48,7 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	if r.Header.Get("Content-Type") != "application/json" {
+		log.NotifyError(errors.New(`Unsupported media-type`), http.StatusUnsupportedMediaType)
 		log.RespondJSON(w, `{}`, http.StatusUnsupportedMediaType)
 		return
 	}
@@ -55,6 +56,7 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	var postData PostData
 	err := postData.ParseRequestBody(r)
 	if err != nil {
+		log.NotifyError(err, http.StatusBadRequest)
 		log.RespondJSON(w, `{}`, http.StatusBadRequest)
 		return
 	}
@@ -62,18 +64,23 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	email, password := postData.Email, postData.Password
 	loginData, err := user.PerformLogin(email, password)
 	if err == user.ErrShortEmail {
+		log.NotifyError(err, http.StatusPreconditionFailed)
 		log.RespondJSON(w, `{}`, http.StatusPreconditionFailed)
 		return
 	} else if err == user.ErrLongEmail {
+		log.NotifyError(err, http.StatusPreconditionFailed)
 		log.RespondJSON(w, `{}`, http.StatusPreconditionFailed)
 		return
 	} else if err == user.ErrShortPassword {
+		log.NotifyError(err, http.StatusPreconditionFailed)
 		log.RespondJSON(w, `{}`, http.StatusPreconditionFailed)
 		return
 	} else if err == user.ErrUserNotFound {
+		log.NotifyError(err, http.StatusNotFound)
 		log.RespondJSON(w, `{}`, http.StatusNotFound)
 		return
 	} else if err != nil {
+		log.NotifyError(err, http.StatusInternalServerError)
 		log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 		return
 	}
@@ -98,12 +105,14 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	token, err := claims.Stringify()
 	if err != nil {
+		log.NotifyError(err, http.StatusInternalServerError)
 		log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 		return
 	}
 
 	refreshToken, err := refresh.Stringify()
 	if err != nil {
+		log.NotifyError(err, http.StatusInternalServerError)
 		log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 		return
 	}

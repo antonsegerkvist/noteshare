@@ -27,6 +27,7 @@ func Authenticate(s Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		cookie, err := r.Cookie(config.SessionCookieName)
 		if err != nil {
+			log.NotifyError(err, http.StatusUnauthorized)
 			log.RespondJSON(w, `{}`, http.StatusUnauthorized)
 			return
 		}
@@ -35,6 +36,7 @@ func Authenticate(s Handle) httprouter.Handle {
 		session := Session{}
 		err = session.Parse(token)
 		if err != nil {
+			log.NotifyError(err, http.StatusUnauthorized)
 			log.RespondJSON(w, `{}`, http.StatusUnauthorized)
 			return
 		}

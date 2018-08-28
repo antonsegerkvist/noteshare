@@ -1,6 +1,7 @@
 package file
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -21,6 +22,7 @@ var Post = session.Authenticate(
 		}
 
 		if r.Header.Get("Content-Type") != "application/json" {
+			log.NotifyError(errors.New(`Unsupported media-type`), http.StatusUnsupportedMediaType)
 			log.RespondJSON(w, `{}`, http.StatusUnsupportedMediaType)
 			return
 		}

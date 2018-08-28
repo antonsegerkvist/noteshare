@@ -32,12 +32,14 @@ var Get = session.Authenticate(
 
 		userID, err := strconv.ParseUint(s.Id, 10, 64)
 		if err != nil {
+			log.NotifyError(err, http.StatusUnauthorized)
 			log.RespondJSON(w, `{}`, http.StatusUnauthorized)
 			return
 		}
 
 		files, err := file.GetRootFilesFromUserID(userID)
 		if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 			return
 		}
@@ -45,6 +47,7 @@ var Get = session.Authenticate(
 		responseData := ResponseData{Files: *files}
 		jsonBody, err := json.Marshal(responseData)
 		if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 			return
 		}

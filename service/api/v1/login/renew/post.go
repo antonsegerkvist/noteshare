@@ -1,6 +1,7 @@
 package renew
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -22,12 +23,14 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	if r.Header.Get("Content-Type") != "application/json" {
+		log.NotifyError(errors.New(`Unsupported media-type`), http.StatusUnsupportedMediaType)
 		log.RespondJSON(w, `{}`, http.StatusUnsupportedMediaType)
 		return
 	}
 
 	oldRefreshCookie, err := r.Cookie(config.SessionRefreshCookieName)
 	if err != nil {
+		log.NotifyError(err, http.StatusUnauthorized)
 		log.RespondJSON(w, `{}`, http.StatusUnauthorized)
 		return
 	}
@@ -36,6 +39,7 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	oldRefreshSession := session.Session{}
 	err = oldRefreshSession.Parse(oldRefeshToken)
 	if err != nil {
+		log.NotifyError(err, http.StatusUnauthorized)
 		log.RespondJSON(w, `{}`, http.StatusUnauthorized)
 		return
 	}
@@ -60,12 +64,14 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	token, err := claims.Stringify()
 	if err != nil {
+		log.NotifyError(err, http.StatusInternalServerError)
 		log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 		return
 	}
 
 	refreshToken, err := refresh.Stringify()
 	if err != nil {
+		log.NotifyError(err, http.StatusInternalServerError)
 		log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 		return
 	}

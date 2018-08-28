@@ -12,7 +12,7 @@ import (
 func GetRootFilesFromUserID(userID uint64) (*[]ModelFile, error) {
 
 	const query = `
-		select f.c_id, f.c_type, f.c_name
+		select f.c_id, f.c_type, f.c_file_reference_id, f.c_file_reference_count, f.c_parent, f.c_name
 		from t_file as f
 		inner join t_file_belongs_to_user as fbtu
 		on fbtu.c_file_id = f.c_id
@@ -38,14 +38,38 @@ func GetRootFilesFromUserID(userID uint64) (*[]ModelFile, error) {
 
 	files := []ModelFile{}
 	for rows.Next() {
-		buffer := ModelFile{}
+		var ID uint64
+		var Type uint64
+		var FileReferenceID sql.NullInt64
+		var FileReferenceCount uint64
+		var Parent sql.NullInt64
+		var Name string
+
 		err = rows.Scan(
-			&buffer.ID,
-			&buffer.Type,
-			&buffer.Name,
+			&ID,
+			&Type,
+			&FileReferenceID,
+			&FileReferenceCount,
+			&Parent,
+			&Name,
 		)
 		if err != nil {
 			return nil, err
+		}
+
+		buffer := ModelFile{
+			ID:                 ID,
+			Type:               Type,
+			FileReferenceID:    0,
+			FileReferenceCount: FileReferenceCount,
+			Parent:             0,
+			Name:               Name,
+		}
+		if FileReferenceID.Valid {
+			buffer.FileReferenceID = uint64(FileReferenceID.Int64)
+		}
+		if Parent.Valid {
+			buffer.Parent = uint64(Parent.Int64)
 		}
 		files = append(files, buffer)
 	}
@@ -53,3 +77,7 @@ func GetRootFilesFromUserID(userID uint64) (*[]ModelFile, error) {
 	return &files, nil
 
 }
+
+//
+// AddRootFileFromUserID adds a single root folder from the specified
+//
