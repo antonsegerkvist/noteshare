@@ -12,8 +12,8 @@ import (
 func AddRootFolderFromUserID(folder *ModelAddFile, userID uint64) (uint64, error) {
 
 	const insertQuery = `
-		insert into t_file (c_type, c_name)
-		values (?, ?)
+		insert into t_file (c_type, c_name, c_is_processed)
+		values (?, ?, 1)
 	`
 
 	const insertRelationQuery = `
