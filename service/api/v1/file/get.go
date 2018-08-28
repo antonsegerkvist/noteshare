@@ -14,9 +14,9 @@ import (
 )
 
 //
-// ResponseData contains the fields of the response.
+// GetResponseData contains the fields of the response.
 //
-type ResponseData struct {
+type GetResponseData struct {
 	Files []file.ModelFile `json:"files"`
 }
 
@@ -44,7 +44,7 @@ var Get = session.Authenticate(
 			return
 		}
 
-		responseData := ResponseData{Files: *files}
+		responseData := GetResponseData{Files: *files}
 		jsonBody, err := json.Marshal(responseData)
 		if err != nil {
 			log.NotifyError(err, http.StatusInternalServerError)
