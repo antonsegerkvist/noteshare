@@ -12,7 +12,7 @@ import (
 func GetRootFilesFromUserID(userID uint64) (*[]ModelFile, error) {
 
 	const query = `
-		select f.c_id, f.c_type, f.c_file_reference_id, f.c_file_reference_count, f.c_parent, f.c_name
+		select f.c_id, f.c_type, f.c_file_reference_id, f.c_file_reference_count, f.c_parent, f.c_name, f.c_modification_date
 		from t_file as f
 		inner join t_file_belongs_to_user as fbtu
 		on fbtu.c_file_id = f.c_id
@@ -44,6 +44,7 @@ func GetRootFilesFromUserID(userID uint64) (*[]ModelFile, error) {
 		var FileReferenceCount uint64
 		var Parent sql.NullInt64
 		var Name string
+		var ModificationDate string
 
 		err = rows.Scan(
 			&ID,
@@ -52,6 +53,7 @@ func GetRootFilesFromUserID(userID uint64) (*[]ModelFile, error) {
 			&FileReferenceCount,
 			&Parent,
 			&Name,
+			&ModificationDate,
 		)
 		if err != nil {
 			return nil, err
@@ -64,6 +66,7 @@ func GetRootFilesFromUserID(userID uint64) (*[]ModelFile, error) {
 			FileReferenceCount: FileReferenceCount,
 			Parent:             0,
 			Name:               Name,
+			ModificationDate:   ModificationDate,
 		}
 		if FileReferenceID.Valid {
 			buffer.FileReferenceID = uint64(FileReferenceID.Int64)

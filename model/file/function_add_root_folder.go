@@ -12,8 +12,8 @@ import (
 func AddRootFolderFromUserID(folder *ModelAddFile, userID uint64) (uint64, error) {
 
 	const insertQuery = `
-		insert into t_file (c_type, c_name, c_is_processed)
-		values (?, ?, 1)
+		insert into t_file (c_type, c_name, c_is_processed, c_modified_by_user_id)
+		values (?, ?, 1, ?)
 	`
 
 	const insertRelationQuery = `
@@ -39,7 +39,7 @@ func AddRootFolderFromUserID(folder *ModelAddFile, userID uint64) (uint64, error
 	}
 	defer insertRelationStmt.Close()
 
-	insertResult, err := insertStmt.Exec(TypeFolder, folder.Name)
+	insertResult, err := insertStmt.Exec(TypeFolder, folder.Name, userID)
 	if err != nil {
 		return 0, err
 	}

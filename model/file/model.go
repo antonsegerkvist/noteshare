@@ -26,6 +26,7 @@ type ModelFile struct {
 	FileReferenceCount uint64 `json:"file_reference_count"`
 	Parent             uint64 `json:"parent,omitempty"`
 	Name               string `json:"name"`
+	ModificationDate   string `json:"modification_date"`
 }
 
 //
