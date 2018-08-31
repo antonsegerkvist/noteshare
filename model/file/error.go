@@ -22,3 +22,8 @@ var ErrUserNotAllowed = errors.New(`User not allowed`)
 // supported file types.
 //
 var ErrUnknownFileType = errors.New(`Unknown file type`)
+
+//
+// ErrFileNotFound is returned when a file is not found.
+//
+var ErrFileNotFound = errors.New(`File not found`)
