@@ -1,8 +1,12 @@
 package upload
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
+	"os"
+	"path"
 	"strconv"
 
 	"github.com/julienschmidt/httprouter"
@@ -11,6 +15,13 @@ import (
 	"github.com/noteshare/model/file"
 	"github.com/noteshare/session"
 )
+
+//
+// ResponseData contains the fields of a response.
+//
+type ResponseData struct {
+	Checksum int64 `json:"checksum"`
+}
 
 //
 // Post handles file uploads.
@@ -29,7 +40,7 @@ var Post = session.Authenticate(
 			return
 		}
 
-		fileID, err := strconv.ParseUint(p.ByName(":fid"), 10, 64)
+		fileID, err := strconv.ParseUint(p.ByName("fid"), 10, 64)
 		if err != nil {
 			log.NotifyError(err, http.StatusBadRequest)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
@@ -47,7 +58,36 @@ var Post = session.Authenticate(
 			return
 		}
 
-		log.RespondJSON(w, `{}`, http.StatusOK)
+		file, err := os.Create(
+			path.Join(
+				config.FileRootDir,
+				config.FileOriginalDir,
+				strconv.FormatUint(fileID, 10),
+			),
+		)
+		if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
+			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
+			return
+		}
+		defer file.Close()
+
+		checksum, err := io.Copy(file, r.Body)
+		if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
+			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
+			return
+		}
+
+		responseData := ResponseData{Checksum: checksum}
+		jsonBytes, err := json.Marshal(responseData)
+		if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
+			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
+			return
+		}
+
+		log.RespondJSON(w, string(jsonBytes), http.StatusOK)
 
 	},
 )

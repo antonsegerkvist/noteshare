@@ -39,3 +39,31 @@ func LookupUnprocessedFileFromUserID(fileID, userID uint64) error {
 	return nil
 
 }
+
+//
+// MarkFileAsUploadedFromUserID marks the file as uploaded.
+//
+func MarkFileAsUploadedFromUserID(fileID uint64) error {
+
+	const query = `
+		update t_file
+		set c_is_uploaded = 1
+		where c_id = ?
+	`
+
+	db := mysql.Open()
+
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(fileID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}

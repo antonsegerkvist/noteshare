@@ -17,7 +17,9 @@ func GetRootFilesFromUserID(userID uint64) (*[]ModelFile, error) {
 		inner join t_file_belongs_to_user as fbtu
 		on fbtu.c_file_id = f.c_id
 		where fbtu.c_user_id = ?
-		and f.c_parent is null and f.c_is_processed = 1
+		and f.c_parent is null
+		and f.c_is_processed = 1
+		and f.c_is_uploaded = 1
 	`
 
 	db := mysql.Open()

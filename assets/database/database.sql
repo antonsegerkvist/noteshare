@@ -26,9 +26,15 @@ DROP TABLE IF EXISTS `t_file`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_file` (
   `c_id` bigint(10) unsigned NOT NULL AUTO_INCREMENT,
-  `c_parent` bigint(10) unsigned DEFAULT NULL,
   `c_type` bigint(10) unsigned NOT NULL,
+  `c_file_reference_id` bigint(10) unsigned DEFAULT NULL,
+  `c_file_reference_count` bigint(10) unsigned NOT NULL DEFAULT '1',
+  `c_parent` bigint(10) unsigned DEFAULT NULL,
   `c_name` varchar(256) NOT NULL,
+  `c_is_processed` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `c_is_uploaded` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `c_modified_by_user_id` bigint(10) unsigned NOT NULL,
+  `c_modification_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`c_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -105,4 +111,4 @@ CREATE TABLE `t_user_belongs_to_group` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-24 23:10:19
+-- Dump completed on 2018-09-01 19:09:50
