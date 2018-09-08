@@ -22,11 +22,11 @@ package file
 type ModelFile struct {
 	ID                 uint64 `json:"id"`
 	Type               uint64 `json:"type"`
-	FileReferenceID    uint64 `json:"file_reference_id,omitempty"`
-	FileReferenceCount uint64 `json:"file_reference_count"`
+	FileReferenceID    uint64 `json:"fileReferenceID,omitempty"`
+	FileReferenceCount uint64 `json:"fileReferenceCount"`
 	Parent             uint64 `json:"parent,omitempty"`
 	Name               string `json:"name"`
-	ModificationDate   string `json:"modification_date"`
+	ModificationDate   string `json:"modificationDate"`
 }
 
 //
@@ -34,7 +34,7 @@ type ModelFile struct {
 //
 type ModelAddFile struct {
 	Type            uint64 `json:"type"`
-	FileReferenceID uint64 `json:"file_reference_id"`
+	FileReferenceID uint64 `json:"fileReferenceID"`
 	Parent          uint64 `json:"parent"`
 	Name            string `json:"name"`
 }

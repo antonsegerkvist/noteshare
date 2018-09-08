@@ -37,7 +37,7 @@ func (rd *RequestData) ParseRequest(r *http.Request) error {
 // PostResponseData contains the fields of a successful response.
 //
 type PostResponseData struct {
-	FileID uint64 `json:"fileID"`
+	FileID uint64 `json:"file_id"`
 }
 
 //
