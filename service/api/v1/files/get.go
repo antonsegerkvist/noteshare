@@ -27,7 +27,7 @@ var Get = session.Authenticate(
 	func(w http.ResponseWriter, r *http.Request, _ httprouter.Params, s session.Session) {
 
 		if config.BuildDebug == true {
-			fmt.Println(`==> GET: /service/api/v1/file`)
+			fmt.Println(`==> GET: /service/api/v1/files`)
 		}
 
 		userID, err := strconv.ParseUint(s.Id, 10, 64)
