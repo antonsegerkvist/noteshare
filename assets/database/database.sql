@@ -1,129 +1,84 @@
-CREATE DATABASE  IF NOT EXISTS `noteshare` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
-USE `noteshare`;
--- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
---
--- Host: 127.0.0.1    Database: noteshare
--- ------------------------------------------------------
--- Server version	5.7.20
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+create database if not exists `noteshare`;
+use `noteshare`;
 
 --
 -- Table structure for table `t_account`
 --
 
-DROP TABLE IF EXISTS `t_account`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_account` (
-  `c_id` bigint(10) unsigned NOT NULL AUTO_INCREMENT,
-  `c_name` varchar(256) NOT NULL,
-  PRIMARY KEY (`c_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+drop table if exists `t_account`;
+create table `t_account` (
+  `c_id`   bigint  (10) unsigned not null auto_increment,
+  `c_name` varchar (256) not null,
+  primary key (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Table structure for table `t_file`
 --
 
-DROP TABLE IF EXISTS `t_file`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_file` (
-  `c_id` bigint(10) unsigned NOT NULL AUTO_INCREMENT,
-  `c_type` bigint(10) unsigned NOT NULL,
-  `c_file_reference_id` bigint(10) unsigned DEFAULT NULL,
-  `c_file_reference_count` bigint(10) unsigned NOT NULL DEFAULT '1',
-  `c_parent` bigint(10) unsigned DEFAULT NULL,
-  `c_name` varchar(256) NOT NULL,
-  `c_is_processed` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `c_is_uploaded` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `c_modified_by_user_id` bigint(10) unsigned NOT NULL,
-  `c_modification_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`c_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+drop table if exists `t_file`;
+create table `t_file` (
+  `c_id`                   bigint (10) unsigned not null auto_increment,
+  `c_type`                 bigint (10) unsigned not null,
+  `c_file_reference_id`    bigint (10) unsigned default null,
+  `c_file_reference_count` bigint (10) unsigned not null default '1',
+  `c_parent`               bigint (10) unsigned default null,
+  `c_name`                 varchar (256) not null,
+  `c_is_processed`         tinyint (3) unsigned not null default '0',
+  `c_is_uploaded`          tinyint (3) unsigned not null default '0',
+  `c_modified_by_user_id`  bigint (10) unsigned not null,
+  `c_modification_date`    datetime not null default CURRENT_TIMESTAMP,
+  primary key (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Table structure for table `t_file_belongs_to_user`
 --
 
-DROP TABLE IF EXISTS `t_file_belongs_to_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_file_belongs_to_user` (
-  `c_user_id` bigint(10) unsigned NOT NULL,
-  `c_file_id` bigint(10) unsigned NOT NULL,
-  PRIMARY KEY (`c_user_id`,`c_file_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+drop table if exists `t_file_belongs_to_user`;
+create table `t_file_belongs_to_user` (
+  `c_user_id` bigint(10) unsigned not null,
+  `c_file_id` bigint(10) unsigned not null,
+  primary key (`c_user_id`,`c_file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Table structure for table `t_group`
 --
 
-DROP TABLE IF EXISTS `t_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_group` (
-  `c_id` bigint(10) unsigned NOT NULL AUTO_INCREMENT,
-  `c_name` varchar(256) NOT NULL,
-  PRIMARY KEY (`c_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+drop table if exists `t_group`;
+create table `t_group` (
+  `c_id`   bigint(10) unsigned not null auto_increment,
+  `c_name` varchar(256) not null,
+  primary key (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Table structure for table `t_user`
 --
 
-DROP TABLE IF EXISTS `t_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_user` (
-  `c_id` bigint(10) unsigned NOT NULL AUTO_INCREMENT,
-  `c_account_id` bigint(10) unsigned NOT NULL,
-  `c_email` varchar(320) NOT NULL,
-  `c_username` varchar(256) NOT NULL,
-  `c_password_hash` varchar(64) NOT NULL,
-  `c_password_salt` varchar(64) NOT NULL,
-  `c_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `c_activated` datetime DEFAULT NULL,
-  PRIMARY KEY (`c_id`),
-  UNIQUE KEY `c_email_UNIQUE` (`c_email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+drop table if exists `t_user`;
+create table `t_user` (
+  `c_id`            bigint(10) unsigned not null auto_increment,
+  `c_account_id`    bigint(10) unsigned not null,
+  `c_email`         varchar(320) not null,
+  `c_username`      varchar(256) not null,
+  `c_password_hash` varchar(64) not null,
+  `c_password_salt` varchar(64) not null,
+  `c_created`       datetime not null default CURRENT_TIMESTAMP,
+  `c_activated`     datetime default null,
+  primary key (`c_id`),
+  unique key (`c_email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Table structure for table `t_user_belongs_to_group`
 --
 
-DROP TABLE IF EXISTS `t_user_belongs_to_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_user_belongs_to_group` (
-  `c_id` bigint(10) unsigned NOT NULL AUTO_INCREMENT,
-  `c_user_id` bigint(10) unsigned NOT NULL,
-  `c_group_id` bigint(10) unsigned NOT NULL,
-  PRIMARY KEY (`c_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2018-09-13 22:33:06
+drop table if exists `t_user_belongs_to_group`;
+create table `t_user_belongs_to_group` (
+  `c_id`       bigint(10) unsigned not null auto_increment,
+  `c_user_id`  bigint(10) unsigned not null,
+  `c_group_id` bigint(10) unsigned not null,
+  primary key (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
