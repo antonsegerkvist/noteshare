@@ -1,4 +1,4 @@
-package file
+package account
 
 import (
 	"fmt"
@@ -16,11 +16,11 @@ import (
 func Options(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	if config.BuildDebug == true {
-		fmt.Println(`==> OPTIONS: /service/api/v1/files`)
+		fmt.Println(`==> OPTIONS: /service/api/v1/account`)
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST")
+	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	w.Header().Set("Access-Control-Allow-Headers", "Origin")
 	log.RespondJSON(w, ``, http.StatusOK)
 }

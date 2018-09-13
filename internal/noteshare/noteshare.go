@@ -6,6 +6,8 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 
+	service_api_v1_account "github.com/noteshare/service/api/v1/account"
+
 	service_api_v1_files "github.com/noteshare/service/api/v1/files"
 
 	service_api_v1_login "github.com/noteshare/service/api/v1/login"
@@ -22,6 +24,8 @@ import (
 func Run() {
 
 	router := httprouter.New()
+
+	service_api_v1_account.Mount(router)
 
 	service_api_v1_files.Mount(router)
 

@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `noteshare` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE  IF NOT EXISTS `noteshare` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 USE `noteshare`;
 -- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
@@ -16,6 +16,20 @@ USE `noteshare`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `t_account`
+--
+
+DROP TABLE IF EXISTS `t_account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_account` (
+  `c_id` bigint(10) unsigned NOT NULL AUTO_INCREMENT,
+  `c_name` varchar(256) NOT NULL,
+  PRIMARY KEY (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `t_file`
@@ -76,6 +90,7 @@ DROP TABLE IF EXISTS `t_user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_user` (
   `c_id` bigint(10) unsigned NOT NULL AUTO_INCREMENT,
+  `c_account_id` bigint(10) unsigned NOT NULL,
   `c_email` varchar(320) NOT NULL,
   `c_username` varchar(256) NOT NULL,
   `c_password_hash` varchar(64) NOT NULL,
@@ -111,4 +126,4 @@ CREATE TABLE `t_user_belongs_to_group` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-01 19:09:50
+-- Dump completed on 2018-09-13 22:33:06
