@@ -1,4 +1,4 @@
-package file
+package files
 
 import "github.com/julienschmidt/httprouter"
 
@@ -8,5 +8,4 @@ import "github.com/julienschmidt/httprouter"
 func Mount(router *httprouter.Router) {
 	router.GET("/service/api/v1/files", Get)
 	router.OPTIONS("/service/api/v1/files", Options)
-	router.POST("/service/api/v1/files", Post)
 }

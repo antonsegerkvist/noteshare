@@ -47,7 +47,7 @@ var Post = session.Authenticate(
 	func(w http.ResponseWriter, r *http.Request, _ httprouter.Params, s session.Session) {
 
 		if config.BuildDebug == true {
-			fmt.Println(`==> POST: /service/api/v1/files`)
+			fmt.Println(`==> POST: /service/api/v1/file`)
 		}
 
 		if r.Header.Get("Content-Type") != "application/json" {

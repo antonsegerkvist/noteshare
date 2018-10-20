@@ -15,6 +15,7 @@ func LookupUnprocessedFileFromUserID(fileID, userID uint64) error {
 		select c_id
 		from t_file
 		where c_id = ?
+		and c_type = ?
 		and c_is_processed = 0
 		and c_modified_by_user_id = ?
 	`
@@ -28,7 +29,7 @@ func LookupUnprocessedFileFromUserID(fileID, userID uint64) error {
 	defer stmt.Close()
 
 	var tmp uint64
-	row := stmt.QueryRow(fileID, userID)
+	row := stmt.QueryRow(fileID, TypeFile, userID)
 	err = row.Scan(&tmp)
 	if err == sql.ErrNoRows {
 		return ErrFileNotFound
