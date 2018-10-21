@@ -7,5 +7,4 @@ all: noteshare
 noteshare:
 	@echo ""
 	@echo "==> Compiling and booting noteshare"
-
 	@$(GO) run ./cmd/noteshare/noteshare.go

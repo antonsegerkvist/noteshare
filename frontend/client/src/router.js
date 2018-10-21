@@ -3,6 +3,10 @@ import Router from 'vue-router'
 
 import ViewDefault from '@/views/Default.vue'
 import ViewLogin from '@/views/Login.vue'
+import ViewSubviewFile from '@/views/subviews/File.vue'
+import ViewSubviewHome from '@/views/subviews/Home.vue'
+import ViewSubviewMe from '@/views/subviews/Me.vue'
+import ViewSubviewShop from '@/views/subviews/Shop.vue'
 
 Vue.use(Router)
 
@@ -33,23 +37,23 @@ export default new Router({
       children: [
         {
           path: '',
-          name: 'home'
+          name: 'home',
+          component: ViewSubviewHome
         },
         {
           path: 'me',
-          name: 'me'
-        },
-        {
-          path: 'user',
-          name: 'user'
+          name: 'me',
+          component: ViewSubviewMe
         },
         {
           path: 'file',
-          name: 'file'
+          name: 'file',
+          component: ViewSubviewFile
         },
         {
           path: 'shop',
-          name: 'shop'
+          name: 'shop',
+          component: ViewSubviewShop
         }
       ]
     }

@@ -1,4 +1,4 @@
-package files
+package folder
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ import (
 func Options(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	if config.BuildDebug == true {
-		fmt.Println(`==> OPTIONS: /service/api/v1/files`)
+		fmt.Println(`==> OPTIONS: /service/api/v1/folder/:id`)
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")

@@ -7,9 +7,9 @@ import (
 )
 
 //
-// GetAccountFromUserID returns the account the spcified user belongs to.
+// GetAccount returns the account the spcified user belongs to.
 //
-func GetAccountFromUserID(userID uint64) (*ModelAccount, error) {
+func GetAccount(userID uint64) (*ModelAccount, error) {
 
 	const query = `
 		select a.c_id, a.c_name from t_account as a

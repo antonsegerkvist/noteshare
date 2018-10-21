@@ -61,7 +61,7 @@ export default Vue.extend({
 
     & > i {
       color: #eee;
-      font-size: 32px;
+      font-size: 30px;
       left: 50%;
       position: absolute;
       top: 50%;

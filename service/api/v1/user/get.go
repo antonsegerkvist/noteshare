@@ -1,4 +1,4 @@
-package files
+package user
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
-	"github.com/noteshare/model/file"
+	"github.com/noteshare/model/user"
 	"github.com/noteshare/session"
 )
 
@@ -17,17 +17,17 @@ import (
 // GetResponseData contains the fields of the response.
 //
 type GetResponseData struct {
-	Files []file.ModelFile `json:"files"`
+	User *user.ModelUser `json:"user"`
 }
 
 //
-// Get returns the root folders that the user has access to.
+// Get returns the users that are in the same account.
 //
 var Get = session.Authenticate(
-	func(w http.ResponseWriter, r *http.Request, _ httprouter.Params, s session.Session) {
+	func(w http.ResponseWriter, r *http.Request, p httprouter.Params, s session.Session) {
 
 		if config.BuildDebug == true {
-			fmt.Println(`==> GET: /service/api/v1/files`)
+			fmt.Println(`==> GET: /service/api/v1/user/:id`)
 		}
 
 		userID, err := strconv.ParseUint(s.Id, 10, 64)
@@ -37,15 +37,30 @@ var Get = session.Authenticate(
 			return
 		}
 
-		files, err := file.GetRootFilesFromUserID(userID)
-		if err != nil {
+		targetUserID := userID
+		targetUser := p.ByName("id")
+		if targetUser != "me" {
+			targetUserID, err = strconv.ParseUint(s.Id, 10, 64)
+			if err != nil {
+				log.NotifyError(err, http.StatusBadRequest)
+				log.RespondJSON(w, `{}`, http.StatusBadRequest)
+				return
+			}
+		}
+
+		response := GetResponseData{}
+		response.User, err = user.GetUser(targetUserID, userID)
+		if err == user.ErrUserNotFound {
+			log.NotifyError(err, http.StatusNotFound)
+			log.RespondJSON(w, `{}`, http.StatusNotFound)
+			return
+		} else if err != nil {
 			log.NotifyError(err, http.StatusInternalServerError)
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 			return
 		}
 
-		responseData := GetResponseData{Files: *files}
-		jsonBody, err := json.Marshal(responseData)
+		jsonBody, err := json.Marshal(response)
 		if err != nil {
 			log.NotifyError(err, http.StatusInternalServerError)
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)

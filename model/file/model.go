@@ -3,22 +3,6 @@ package file
 //
 // ModelFile contains information about a single file.
 //
-// ID
-// This is a unique file identifier.
-//
-// Type:
-// Refers what type of file this is.
-//
-// FileReferenceID:
-// Is used for weak and hard links and refers to the original file id.
-//
-// FileReferenceCount:
-// Is used for hard links and is the number of hard link references that are
-// pointing to this file.
-//
-// Parent:
-// Refers to the parent file id (of type folder) of this file.
-//
 type ModelFile struct {
 	ID                 uint64 `json:"id"`
 	Type               uint64 `json:"type"`
