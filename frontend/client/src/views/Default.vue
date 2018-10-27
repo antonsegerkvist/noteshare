@@ -10,7 +10,7 @@
         </i>
       </div>
       <div ref="settings-dropdown" :class="getSettingsDropdownClass">
-        <div class="entry">
+        <div @click="openProfile" class="entry">
           <div class="icon">
             <i class="material-icons">
               account_circle
@@ -20,7 +20,7 @@
             <p>{{ getProfileTitle }}</p>
           </div>
         </div>
-        <div class="entry">
+        <div @click="openAdministrator" class="entry">
           <div class="icon">
             <i class="material-icons">
               settings_applications
@@ -51,21 +51,33 @@
     <div class="body">
       <router-view :key="$route.fullPath"/>
     </div>
+    <setting-administrator
+      v-if="settingsAdministratorOpen"
+      @close="closeAdministrator"/>
+    <setting-profile
+      v-if="settingsProfileOpen"
+      @close="closeProfile"/>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import NavigationMain from '@/components/navigation/Main.vue'
+import SettingAdministrator from '@/components/setting/Administrator.vue'
+import SettingProfile from '@/components/setting/Profile.vue'
 export default Vue.extend({
 
   components: {
-    'navigation-main': NavigationMain
+    'navigation-main': NavigationMain,
+    'setting-administrator': SettingAdministrator,
+    'setting-profile': SettingProfile
   },
 
   data () {
     return {
-      settingsOpen: false
+      settingsOpen: false,
+      settingsAdministratorOpen: false,
+      settingsProfileOpen: false
     }
   },
 
@@ -91,6 +103,24 @@ export default Vue.extend({
       } else {
         this.settingsOpen = false
       }
+    },
+
+    closeAdministrator () {
+      this.settingsAdministratorOpen = false
+    },
+
+    closeProfile () {
+      this.settingsProfileOpen = false
+    },
+
+    openAdministrator () {
+      this.settingsOpen = false
+      this.settingsAdministratorOpen = true
+    },
+
+    openProfile () {
+      this.settingsOpen = false
+      this.settingsProfileOpen = true
     }
 
   },
