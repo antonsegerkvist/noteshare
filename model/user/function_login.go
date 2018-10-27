@@ -14,7 +14,7 @@ import (
 func PerformLogin(email, password string) (*ModelLogin, error) {
 
 	const query = `
-		select c_id from t_user
+		select c_id, c_account_id from t_user
 		where c_email = ? and c_password_hash = SHA2(CONCAT(c_password_salt, ?), 256)
 		and c_activated is not null
 	`
@@ -36,7 +36,7 @@ func PerformLogin(email, password string) (*ModelLogin, error) {
 
 	ret := &ModelLogin{}
 	row := stmt.QueryRow(email, password)
-	err = row.Scan(&ret.UserID)
+	err = row.Scan(&ret.UserID, &ret.AccountID)
 	if err == sql.ErrNoRows {
 		return nil, ErrUserNotFound
 	} else if err != nil {

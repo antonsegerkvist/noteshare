@@ -81,6 +81,7 @@ export default Vue.extend({
       color: #eee;
       font-family: Arial, Helvetica, sans-serif;
       font-size: 14px;
+      font-weight: bold;
       overflow: hidden;
       text-overflow: ellipsis;
       width: 100%;
@@ -90,6 +91,7 @@ export default Vue.extend({
   }
 
 }
+.active { background-color: #333; }
 .active > .title > p,
 .active > .icon > i { color: #49aad0; }
 </style>

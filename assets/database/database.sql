@@ -7,8 +7,9 @@ use `noteshare`;
 
 drop table if exists `t_account`;
 create table `t_account` (
-  `c_id`   bigint  (10)  unsigned not null auto_increment,
-  `c_name` varchar (256) not null,
+  `c_id`     bigint  (10)  unsigned not null auto_increment,
+  `c_name`   varchar (256) not null,
+  `c_layout` json          default null,
   primary key (`c_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

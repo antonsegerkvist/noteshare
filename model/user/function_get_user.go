@@ -15,8 +15,8 @@ func GetUser(targetUserID, userID uint64) (*ModelUser, error) {
 	const query = `
 		select u1.c_id, u1.c_email, u1.c_username, u1.c_created
 		from t_user as u1
-		inner join t_user as u2 on u1.c_id = u2.c_id
-		where u1.c_id = ? and u2.c_id
+		inner join t_user as u2 on u1.c_account_id = u2.c_account_id
+		where u1.c_id = ? and u2.c_id = ?
 	`
 
 	db := mysql.Open()

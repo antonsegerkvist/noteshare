@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
@@ -14,37 +13,27 @@ import (
 )
 
 //
-// GetResponseData contains the fields of the response.
-//
-type GetResponseData struct {
-	account.ModelAccount `json:"account"`
-}
-
-//
 // Get returns the root folders that the user has access to.
 //
 var Get = session.Authenticate(
-	func(w http.ResponseWriter, r *http.Request, _ httprouter.Params, s session.Session) {
+	func(w http.ResponseWriter, r *http.Request, p httprouter.Params, s session.Session) {
 
 		if config.BuildDebug == true {
-			fmt.Println(`==> GET: /service/api/v1/account`)
+			fmt.Println(`==> GET: /service/api/v1/account/me`)
 		}
 
-		userID, err := strconv.ParseUint(s.Id, 10, 64)
-		if err != nil {
-			log.NotifyError(err, http.StatusUnauthorized)
-			log.RespondJSON(w, `{}`, http.StatusUnauthorized)
+		response, err := account.GetAccount(s.AccountID)
+		if err == account.ErrAccountNotFound {
+			log.NotifyError(err, http.StatusNotFound)
+			log.RespondJSON(w, `{}`, http.StatusNotFound)
 			return
-		}
-
-		account, err := account.GetAccount(userID)
-		if err != nil {
-			log.NotifyError(err, http.StatusUnauthorized)
+		} else if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 			return
 		}
 
-		jsonBytes, err := json.Marshal(account)
+		jsonBytes, err := json.Marshal(response)
 		if err != nil {
 			log.NotifyError(err, http.StatusInternalServerError)
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)

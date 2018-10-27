@@ -8,4 +8,5 @@ import "github.com/julienschmidt/httprouter"
 func Mount(router *httprouter.Router) {
 	router.GET("/service/api/v1/folder/:id", Get)
 	router.OPTIONS("/service/api/v1/folder/:id", Options)
+	router.POST("/service/api/v1/folder/:id", Post)
 }

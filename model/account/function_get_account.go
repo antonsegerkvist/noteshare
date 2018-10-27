@@ -9,13 +9,11 @@ import (
 //
 // GetAccount returns the account the spcified user belongs to.
 //
-func GetAccount(userID uint64) (*ModelAccount, error) {
+func GetAccount(accountID uint64) (*ModelAccount, error) {
 
 	const query = `
-		select a.c_id, a.c_name from t_account as a
-		inner join t_user as u
-		on a.c_id = u.c_account_id
-		where u.c_id = ?
+		select c_id, c_name from t_account
+		where c_id = ?
 	`
 
 	db := mysql.Open()
@@ -26,10 +24,10 @@ func GetAccount(userID uint64) (*ModelAccount, error) {
 	}
 
 	account := ModelAccount{}
-	row := stmt.QueryRow(userID)
+	row := stmt.QueryRow(accountID)
 	err = row.Scan(&account.ID, &account.Name)
 	if err == sql.ErrNoRows {
-		return nil, ErrInvalidUserOrAccount
+		return nil, ErrAccountNotFound
 	} else if err != nil {
 		return nil, err
 	}

@@ -30,10 +30,16 @@
 <script>
 import Vue from 'vue'
 import NavigationButton from '@/components/navigation/Button.vue'
+import NavigationMe from '@/components/navigation/Me.vue'
+import NavigationFile from '@/components/navigation/File.vue'
+import NavigationShop from '@/components/navigation/Shop.vue'
 export default Vue.extend({
 
   components: {
-    'navigation-button': NavigationButton
+    'navigation-button': NavigationButton,
+    'navigation-me': NavigationMe,
+    'navigation-file': NavigationFile,
+    'navigation-shop': NavigationShop
   },
 
   computed: {
@@ -104,7 +110,17 @@ export default Vue.extend({
   position: relative;
   width: 100%;
 
+  & > .navigation-me {
+    background-color: #333;
+    bottom: 90px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 45px;
+  }
+
   & > .navigation-file {
+    background-color: #333;
     bottom: 45px;
     left: 0;
     position: absolute;
@@ -113,6 +129,7 @@ export default Vue.extend({
   }
 
   & > .navigation-shop {
+    background-color: #333;
     bottom: 0;
     left: 0;
     position: absolute;

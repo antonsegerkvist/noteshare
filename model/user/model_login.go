@@ -4,7 +4,8 @@ package user
 // ModelLogin contains the data required during login.
 //
 type ModelLogin struct {
-	UserID uint64
+	AccountID uint64
+	UserID    uint64
 }
 
 //

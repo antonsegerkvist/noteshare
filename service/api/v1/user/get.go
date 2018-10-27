@@ -14,13 +14,6 @@ import (
 )
 
 //
-// GetResponseData contains the fields of the response.
-//
-type GetResponseData struct {
-	User *user.ModelUser `json:"user"`
-}
-
-//
 // Get returns the users that are in the same account.
 //
 var Get = session.Authenticate(
@@ -30,17 +23,11 @@ var Get = session.Authenticate(
 			fmt.Println(`==> GET: /service/api/v1/user/:id`)
 		}
 
-		userID, err := strconv.ParseUint(s.Id, 10, 64)
-		if err != nil {
-			log.NotifyError(err, http.StatusUnauthorized)
-			log.RespondJSON(w, `{}`, http.StatusUnauthorized)
-			return
-		}
-
-		targetUserID := userID
+		var err error
+		targetUserID := s.UserID
 		targetUser := p.ByName("id")
 		if targetUser != "me" {
-			targetUserID, err = strconv.ParseUint(s.Id, 10, 64)
+			targetUserID, err = strconv.ParseUint(targetUser, 10, 64)
 			if err != nil {
 				log.NotifyError(err, http.StatusBadRequest)
 				log.RespondJSON(w, `{}`, http.StatusBadRequest)
@@ -48,8 +35,7 @@ var Get = session.Authenticate(
 			}
 		}
 
-		response := GetResponseData{}
-		response.User, err = user.GetUser(targetUserID, userID)
+		response, err := user.GetUser(targetUserID, s.UserID)
 		if err == user.ErrUserNotFound {
 			log.NotifyError(err, http.StatusNotFound)
 			log.RespondJSON(w, `{}`, http.StatusNotFound)

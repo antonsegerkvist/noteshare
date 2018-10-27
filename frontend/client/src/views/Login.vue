@@ -130,10 +130,11 @@ export default Vue.extend({
       }
 
       & > input[type="submit"] {
-        background-color: #eee;
         appearance: none;
+        background-color: #eee;
         border: 1px solid #aaa;
         box-sizing: border-box;
+        cursor: pointer;
         font-size: 14px;
         height: 40px;
         margin-top: 15px;

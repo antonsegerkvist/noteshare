@@ -7,8 +7,12 @@ import (
 	"github.com/noteshare/config"
 )
 
+//
 // Session contains all session claim information.
+//
 type Session struct {
+	AccountID uint64 `json:"aid,omitempty"`
+	UserID    uint64 `json:"uid,omitempty"`
 	jwt.StandardClaims
 }
 
@@ -23,8 +27,8 @@ func (s *Session) Parse(jwtString string) error {
 
 	if session, ok := token.Claims.(*Session); ok && token.Valid {
 		s.ExpiresAt = session.ExpiresAt
-		s.Id = session.Id
-
+		s.AccountID = session.AccountID
+		s.UserID = session.UserID
 	}
 
 	return err

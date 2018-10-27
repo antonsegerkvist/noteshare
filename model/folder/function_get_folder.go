@@ -10,13 +10,11 @@ import (
 // GetFoldersFromFolderID returns a list of folder with the specified folder ID
 // as a parent.
 //
-func GetFoldersFromFolderID(folderID, userID uint64) (*[]ModelFolder, error) {
+func GetFoldersFromFolderID(folderID, userID, accountID uint64) (*[]ModelFolder, error) {
 
 	const query = `
 		select c_id, c_parent, c_name, c_created_by_user_id, c_modified_by_user_id, c_created_date, c_modified_date
-		from t_folder
-		inner join t_user on t_folder.c_account_id = t_user.c_account_id
-		where t_folder.c_parent = ? and t_user.c_id = ?
+		from t_folder where c_parent = ? and c_account_id = ?
 	`
 
 	db := mysql.Open()
@@ -26,7 +24,7 @@ func GetFoldersFromFolderID(folderID, userID uint64) (*[]ModelFolder, error) {
 		return nil, err
 	}
 
-	rows, err := stmt.Query(folderID, userID)
+	rows, err := stmt.Query(folderID, accountID)
 	if err == sql.ErrNoRows {
 		return &[]ModelFolder{}, nil
 	} else if err != nil {

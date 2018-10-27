@@ -15,6 +15,7 @@ export default Vue.extend({
 
   created () {
     const lang = this.$route.params.lang
+    const $router = this.$router
     axios.interceptors.response.use(function (response) {
       return response
     }, function (error) {
@@ -27,7 +28,7 @@ export default Vue.extend({
               resolve(axios(error.config))
             })
             .catch((renewError) => {
-              window.location.href = `/#/${lang}/login`
+              $router.push({ path: `/${lang}/login` })
               reject(renewError)
             })
         })

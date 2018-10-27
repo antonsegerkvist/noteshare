@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -86,8 +85,9 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	claims := session.Session{
+		AccountID: loginData.AccountID,
+		UserID:    loginData.UserID,
 		StandardClaims: jwt.StandardClaims{
-			Id:        strconv.FormatUint(loginData.UserID, 10),
 			IssuedAt:  time.Now().Unix(),
 			ExpiresAt: time.Now().Unix() + int64(config.SessionTime),
 			Issuer:    "noteshare",
@@ -95,8 +95,9 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	refresh := session.Session{
+		AccountID: loginData.AccountID,
+		UserID:    loginData.UserID,
 		StandardClaims: jwt.StandardClaims{
-			Id:        strconv.FormatUint(loginData.UserID, 10),
 			IssuedAt:  time.Now().Unix(),
 			ExpiresAt: time.Now().Unix() + int64(config.RefreshTime),
 			Issuer:    "noteshare",

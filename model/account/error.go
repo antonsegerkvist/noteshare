@@ -3,7 +3,6 @@ package account
 import "errors"
 
 //
-// ErrInvalidUserOrAccount is returned either when a user or account does
-// not exist.
+// ErrAccountNotFound is returned either when a account does not exist.
 //
-var ErrInvalidUserOrAccount = errors.New(`User or account does not exist`)
+var ErrAccountNotFound = errors.New(`Account does not exist`)

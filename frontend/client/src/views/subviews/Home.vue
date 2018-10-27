@@ -1,5 +1,7 @@
 <template>
   <div class="view-subview-home">
+    <div class="header">
+    </div>
   </div>
 </template>
 
@@ -15,5 +17,12 @@ export default Vue.extend({})
   overflow-x: hidden;
   overflow-y: auto;
   width: 100%;
+
+  & > .header {
+    display: block;
+    height: 45px;
+    width: 100%;
+  }
+
 }
 </style>

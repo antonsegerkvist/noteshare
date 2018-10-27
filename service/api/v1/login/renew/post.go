@@ -45,8 +45,9 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	claims := session.Session{
+		AccountID: oldRefreshSession.AccountID,
+		UserID:    oldRefreshSession.UserID,
 		StandardClaims: jwt.StandardClaims{
-			Id:        oldRefreshSession.Id,
 			IssuedAt:  time.Now().Unix(),
 			ExpiresAt: time.Now().Unix() + int64(config.SessionTime),
 			Issuer:    "noteshare",
@@ -54,8 +55,9 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	refresh := session.Session{
+		AccountID: oldRefreshSession.AccountID,
+		UserID:    oldRefreshSession.UserID,
 		StandardClaims: jwt.StandardClaims{
-			Id:        oldRefreshSession.Id,
 			IssuedAt:  time.Now().Unix(),
 			ExpiresAt: time.Now().Unix() + int64(config.RefreshTime),
 			Issuer:    "noteshare",
