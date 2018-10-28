@@ -1,5 +1,7 @@
 <template>
   <div class="home-layout">
+    <div v-if="editMode" class="add-new">
+    </div>
     <div v-for="(child, index) in getSafeData" :key="index" class="element">
       <home-sublayout-two-column
         v-if="child.type === 0"
@@ -13,6 +15,8 @@
         v-else-if="child.type === 10000"
         :edit-mode="editMode"
         :data="child"/>
+      <div v-if="editMode" class="add-new">
+      </div>
     </div>
   </div>
 </template>
@@ -54,9 +58,22 @@ export default Vue.extend({
   float: left;
   width: 100%;
 
+  & > .add-new {
+    float: left;
+    height: 20px;
+    width: 100%;
+  }
+
   & > .element {
     float: left;
     width: 100%;
+
+    & > .add-new {
+      float: left;
+      height: 20px;
+      width: 100%;
+    }
+
   }
 
 }

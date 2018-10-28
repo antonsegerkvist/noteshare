@@ -61,9 +61,8 @@ export default Vue.extend({
   width: 100%;
 
   & > .col-1-2 {
-    background-color: red;
     float: left;
-    min-height: 100px;
+    min-height: 1px;
     width: 50%;
   }
 

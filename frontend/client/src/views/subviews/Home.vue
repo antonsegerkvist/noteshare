@@ -20,9 +20,12 @@ export default Vue.extend({
     return {
       data: [
         {
+          type: 10000, content: '<h1>Welcome to our document manager</h1>'
+        },
+        {
           type: 0,
           children: [
-            [ { type: 10000 } ],
+            [ { type: 10000, content: '<h1>Hello World</h1>' } ],
             [ { type: 10000 } ]
           ]
         },
@@ -30,13 +33,6 @@ export default Vue.extend({
           type: 1,
           children: [
             [ { type: 10000 } ],
-            [ { type: 10000 } ],
-            [ { type: 10000 } ]
-          ]
-        },
-        {
-          type: 0,
-          children: [
             [ { type: 10000 } ],
             [ { type: 10000 } ]
           ]
@@ -103,7 +99,7 @@ export default Vue.extend({
     height: 45px;
     line-height: 45px;
     overflow: hidden;
-    padding: 0 10px;
+    padding: 0 20px;
     width: 100%;
 
     & > h5.title {
@@ -121,7 +117,9 @@ export default Vue.extend({
   }
 
   & > .body {
+    box-sizing: border-box;
     display: inline-block;
+    padding: 0 10px;
     width: 100%;
   }
 
