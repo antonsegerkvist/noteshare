@@ -4,6 +4,11 @@
       <h5 class="title">{{ getWelcomeMessage }}</h5>
       <h5 class="date">{{ getFriendlyDate }}</h5>
     </div>
+    <div class="body">
+      <home-layout
+        :edit-mode="false"
+        :data="[ { type: 0 }, { type: 1 }, { type: 0 } ]"/>
+    </div>
   </div>
 </template>
 
@@ -84,6 +89,11 @@ export default Vue.extend({
       font-size: 20px;
     }
 
+  }
+
+  & > .body {
+    display: block;
+    width: 100%;
   }
 
 }

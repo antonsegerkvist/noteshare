@@ -1,6 +1,6 @@
 <template>
   <div class="tinymce">
-    <form>
+    <form @submit.prevent="submit">
       <textarea ref="tinymce">
       </textarea>
     </form>
@@ -11,6 +11,12 @@
 import Vue from 'vue'
 export default Vue.extend({
 
+  data () {
+    return {
+      content: ''
+    }
+  },
+
   mounted () {
     /* global tinymce */
     tinymce.init({
@@ -20,9 +26,23 @@ export default Vue.extend({
         'searchreplace visualblocks code fullscreen',
         'insertdatetime media table contextmenu paste'
       ],
-      menubar: true,
-      toolbar: 'undo redo | fontselect | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image'
+      menubar: false,
+      toolbar: 'undo redo | fontselect | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link',
+      setup: (editor) => {
+        editor.on('keyup', () => {
+          this.content = editor.getContent()
+        })
+      }
     })
+  },
+
+  methods: {
+
+    submit () {
+      console.log(this.content)
+      this.$emit('save', this.content)
+    }
+
   }
 
 })

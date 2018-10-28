@@ -55,6 +55,12 @@
 import Vue from 'vue'
 export default Vue.extend({
 
+  data () {
+    return {
+      currentState: 0
+    }
+  },
+
   methods: {
 
     backgroundClick (event) {
