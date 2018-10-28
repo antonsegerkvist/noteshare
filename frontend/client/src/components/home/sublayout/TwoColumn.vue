@@ -1,4 +1,5 @@
 <!-- Type: 0 -->
+
 <template>
   <div class="sublayout-two-column">
     <div class="col-1-2">
@@ -42,11 +43,11 @@ export default Vue.extend({
   computed: {
 
     getColumn1Data () {
-      return this.data && this.data.children && this.data.children.length > 0 && this.data.children ? this.data.children[0] : []
+      return this.data && this.data.children && this.data.children.length > 0 ? this.data.children[0] : []
     },
 
     getColumn2Data () {
-      return this.data && this.data.children && this.data.children.length > 1 && this.data.children ? this.data.children[1] : []
+      return this.data && this.data.children && this.data.children.length > 1 ? this.data.children[1] : []
     }
 
   }
@@ -56,12 +57,12 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .sublayout-two-column {
-  display: block;
+  float: left;
   width: 100%;
 
   & > .col-1-2 {
     background-color: red;
-    float:left;
+    float: left;
     min-height: 100px;
     width: 50%;
   }

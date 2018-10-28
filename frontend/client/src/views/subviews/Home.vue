@@ -7,7 +7,7 @@
     <div class="body">
       <home-layout
         :edit-mode="false"
-        :data="[ { type: 0 }, { type: 1 }, { type: 0 } ]"/>
+        :data="data"/>
     </div>
   </div>
 </template>
@@ -15,6 +15,35 @@
 <script>
 import Vue from 'vue'
 export default Vue.extend({
+
+  data () {
+    return {
+      data: [
+        {
+          type: 0,
+          children: [
+            [ { type: 10000 } ],
+            [ { type: 10000 } ]
+          ]
+        },
+        {
+          type: 1,
+          children: [
+            [ { type: 10000 } ],
+            [ { type: 10000 } ],
+            [ { type: 10000 } ]
+          ]
+        },
+        {
+          type: 0,
+          children: [
+            [ { type: 10000 } ],
+            [ { type: 10000 } ]
+          ]
+        }
+      ]
+    }
+  },
 
   computed: {
 
@@ -92,7 +121,7 @@ export default Vue.extend({
   }
 
   & > .body {
-    display: block;
+    display: inline-block;
     width: 100%;
   }
 

@@ -51,11 +51,11 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .home-layout {
-  display: block;
+  float: left;
   width: 100%;
 
   & > .element {
-    display: block;
+    float: left;
     width: 100%;
   }
 
