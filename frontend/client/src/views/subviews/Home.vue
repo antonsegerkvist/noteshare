@@ -20,12 +20,20 @@ export default Vue.extend({
     return {
       data: [
         {
-          type: 10000, content: '<h1>Welcome to our document manager</h1>'
+          type: 10000,
+          header: '<h1 style="font-size:18px;font-weight:bold;">Welcome to our document manager</h1>',
+          content: '<h5 style="font-size:18px;">Welcome to our document manager</h5>'
         },
         {
           type: 0,
           children: [
-            [ { type: 10000, content: '<h1>Hello World</h1>' } ],
+            [
+              {
+                type: 10000,
+                header: '<h1 style="font-size:18px;font-weight:bold;">Test 1</h1>',
+                content: '<h5 style="font-size:18px;">Test sub 1</h5>'
+              }
+            ],
             [ { type: 10000 } ]
           ]
         },

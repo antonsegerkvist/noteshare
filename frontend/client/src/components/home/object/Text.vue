@@ -2,11 +2,13 @@
 
 <template>
   <div class="object-text">
-    <div v-if="editMode === false" v-html="data.content" class="view">
+    <div class="view">
+      <div v-html="data.header" class="header">
+      </div>
+      <div v-html="data.content" class="body">
+      </div>
     </div>
-    <div v-else class="edit">
-      <global-editor-tinymce
-        @save="save"/>
+    <div v-if="editMode && edit" class="modal">
     </div>
   </div>
 </template>
@@ -31,6 +33,12 @@ export default Vue.extend({
 
   },
 
+  data () {
+    return {
+      edit: false
+    }
+  },
+
   methods: {
 
     save (content) {
@@ -40,6 +48,10 @@ export default Vue.extend({
   },
 
   computed: {
+
+    getSafeHeader () {
+      return this.data && this.data.header ? this.data.header : ''
+    },
 
     getSafeContent () {
       return this.data && this.data.content ? this.data.content : ''
@@ -60,15 +72,34 @@ export default Vue.extend({
   & > .view {
     background-color: #fff;
     float: left;
-    min-height: 100px;
     width: 100%;
+
+    & > .header {
+      background-color: #333;
+      box-sizing: border-box;
+      color: #eee;
+      float: left;
+      padding: 10px;
+      width: 100%;
+    }
+
+    & > .body {
+      box-sizing: border-box;
+      float: left;
+      padding: 10px;
+      width: 100%;
+    }
+
   }
 
-  & > .edit {
-    background-color: #fff;
-    float: left;
-    min-height: 100px;
-    width: 100%;
+  & > .modal {
+    background-color: rgba(0,0,0,0.5);
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1000000;
   }
 
 }
