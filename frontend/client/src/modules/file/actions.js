@@ -1,4 +1,5 @@
-import ServiceApiV1FolderGet from '@/service/api/v1/folder/get'
+import { ServiceApiV1FileGet } from '@/service/api/v1/file/get'
+import { ServiceApiV1FolderGet } from '@/service/api/v1/folder/get'
 
 const actions = {
 
@@ -8,8 +9,10 @@ const actions = {
       .catch(() => {})
   },
 
-  fetchFolderFiles (folderID) {
-
+  fetchFolderFiles ({ state }, folderID) {
+    ServiceApiV1FileGet(folderID)
+      .then(response => {})
+      .catch(() => {})
   }
 
 }
