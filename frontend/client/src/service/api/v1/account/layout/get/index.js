@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-export function ServiceApiV1AccountGet () {
+export function ServiceApiV1AccountLayoutGet () {
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
-      url: '/service/api/v1/account',
+      url: '/service/api/v1/account/layout',
       validateStatus (status) {
         const validStatusCodes = [200]
         return validStatusCodes.indexOf(status) !== -1

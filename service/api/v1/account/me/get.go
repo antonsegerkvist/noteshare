@@ -1,4 +1,4 @@
-package account
+package me
 
 import (
 	"encoding/json"
@@ -13,7 +13,7 @@ import (
 )
 
 //
-// Get returns the root folders that the user has access to.
+// Get returns information about the account the user belongs to.
 //
 var Get = session.Authenticate(
 	func(w http.ResponseWriter, r *http.Request, p httprouter.Params, s session.Session) {

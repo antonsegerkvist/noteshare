@@ -8,7 +8,8 @@ import (
 
 	frontend "github.com/noteshare/frontend"
 
-	service_api_v1_account "github.com/noteshare/service/api/v1/account"
+	service_api_v1_account_layout "github.com/noteshare/service/api/v1/account/layout"
+	service_api_v1_account_me "github.com/noteshare/service/api/v1/account/me"
 
 	service_api_v1_folder "github.com/noteshare/service/api/v1/folder"
 
@@ -31,7 +32,8 @@ func Run() {
 
 	frontend.Mount(router)
 
-	service_api_v1_account.Mount(router)
+	service_api_v1_account_layout.Mount(router)
+	service_api_v1_account_me.Mount(router)
 
 	service_api_v1_folder.Mount(router)
 

@@ -7,12 +7,12 @@ import (
 )
 
 //
-// GetAccount returns the account the sepcified user belongs to.
+// GetAccountLayout returns the account layout for the user.
 //
-func GetAccount(accountID uint64) (*ModelAccount, error) {
+func GetAccountLayout(accountID uint64) (*ModelAccountLayout, error) {
 
 	const query = `
-		select c_id, c_name from t_account
+		select c_layout from t_account
 		where c_id = ?
 	`
 
@@ -23,15 +23,22 @@ func GetAccount(accountID uint64) (*ModelAccount, error) {
 		return nil, err
 	}
 
-	account := ModelAccount{}
+	var json sql.NullString
 	row := stmt.QueryRow(accountID)
-	err = row.Scan(&account.ID, &account.Name)
+	err = row.Scan(&json)
 	if err == sql.ErrNoRows {
 		return nil, ErrAccountNotFound
 	} else if err != nil {
 		return nil, err
 	}
 
-	return &account, nil
+	ret := ModelAccountLayout{}
+	if json.Valid {
+		ret.Layout = json.String
+	} else {
+		ret.Layout = "null"
+	}
+
+	return &ret, nil
 
 }
