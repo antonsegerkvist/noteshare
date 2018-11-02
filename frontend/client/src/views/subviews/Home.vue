@@ -14,6 +14,7 @@
 
 <script>
 import Vue from 'vue'
+import { mapActions } from 'vuex'
 export default Vue.extend({
 
   data () {
@@ -47,6 +48,18 @@ export default Vue.extend({
         }
       ]
     }
+  },
+
+  created () {
+    this.fetchAccountLayout()
+  },
+
+  methods: {
+
+    ...mapActions('account', [
+      'fetchAccountLayout'
+    ])
+
   },
 
   computed: {
