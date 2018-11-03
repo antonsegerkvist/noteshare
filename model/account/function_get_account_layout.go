@@ -22,6 +22,7 @@ func GetAccountLayout(accountID uint64) (*ModelAccountLayout, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer stmt.Close()
 
 	var json sql.NullString
 	row := stmt.QueryRow(accountID)
@@ -31,12 +32,13 @@ func GetAccountLayout(accountID uint64) (*ModelAccountLayout, error) {
 	} else if err != nil {
 		return nil, err
 	}
+	defer stmt.Close()
 
 	ret := ModelAccountLayout{}
 	if json.Valid {
-		ret.Layout = json.String
+		ret.Layout = &json.String
 	} else {
-		ret.Layout = "null"
+		ret.Layout = nil
 	}
 
 	return &ret, nil

@@ -1,11 +1,21 @@
-import { ServiceApiV1AccountLayoutGet } from '@/service/api/v1/account/layout/get'
+import { ServiceApiV1AccountMeGet } from '@/service/api/v1/account/me/get'
 
 const actions = {
 
-  fetchAccountLayout ({ state }) {
-    ServiceApiV1AccountLayoutGet()
-      .then(response => { console.log(response) })
-      .catch(() => {})
+  fetchAccount ({ state }) {
+    ServiceApiV1AccountMeGet()
+      .then(response => {
+        switch (response._status) {
+          case 200:
+            state.account = response.account
+            break
+          default:
+            state.account = {}
+        }
+      })
+      .catch(() => {
+        state.account = {}
+      })
   }
 
 }

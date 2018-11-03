@@ -22,6 +22,7 @@ func GetAccount(accountID uint64) (*ModelAccount, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer stmt.Close()
 
 	account := ModelAccount{}
 	row := stmt.QueryRow(accountID)

@@ -65,6 +65,7 @@ import Vue from 'vue'
 import NavigationMain from '@/components/navigation/Main.vue'
 import SettingAdministrator from '@/components/setting/Administrator.vue'
 import SettingProfile from '@/components/setting/Profile.vue'
+import { mapActions } from 'vuex'
 export default Vue.extend({
 
   components: {
@@ -83,6 +84,7 @@ export default Vue.extend({
 
   mounted () {
     window.addEventListener('click', this.click)
+    this.fetchAccount()
   },
 
   beforeDestroy () {
@@ -90,6 +92,10 @@ export default Vue.extend({
   },
 
   methods: {
+
+    ...mapActions('account', [
+      'fetchAccount'
+    ]),
 
     pushRoute (path) {
       this.$router.push({ path: `/${this.$route.params.lang}${path}` })

@@ -21,6 +21,7 @@ drop table if exists `t_user`;
 create table `t_user` (
   `c_id`            bigint  (10)  unsigned not null auto_increment,
   `c_account_id`    bigint  (10)  unsigned not null,
+  `c_is_admin`      tinyint (8)   not null default 0,
   `c_email`         varchar (320) not null,
   `c_username`      varchar (256) not null,
   `c_password_hash` varchar (64)  not null,
@@ -37,9 +38,23 @@ create table `t_user` (
 
 drop table if exists `t_group`;
 create table `t_group` (
-  `c_id`   bigint  (10)  unsigned not null auto_increment,
-  `c_name` varchar (256) not null,
+  `c_id`         bigint  (10)  unsigned not null auto_increment,
+  `c_account_id` bigint  (10)  unsigned not null,
+  `c_name`       varchar (256) not null,
   primary key (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `t_group_permission`
+--
+
+drop table if exists `t_group_permission`
+create table `t_group_permission` (
+  `c_account_id` bigint (10) unsigned not null,
+  `c_group_id`   bigint (10) unsigned not null,
+  `c_key`        int    (10) unsigned not null,
+  `c_value`      int    (10) unsigned not null,
+  primary key (`c_group_id`, `c_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -53,6 +68,8 @@ create table `t_user_belongs_to_group` (
   `c_group_id` bigint (10) unsigned not null,
   primary key (`c_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 
 --
 -- Table structure for table `t_folder`

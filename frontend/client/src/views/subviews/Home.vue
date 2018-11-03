@@ -14,11 +14,12 @@
 
 <script>
 import Vue from 'vue'
-import { mapActions } from 'vuex'
+import { ServiceApiV1AccountLayoutGet } from '@/service/api/v1/account/layout/get'
 export default Vue.extend({
 
   data () {
     return {
+      layout: null,
       data: [
         {
           type: 10000,
@@ -51,15 +52,19 @@ export default Vue.extend({
   },
 
   created () {
-    this.fetchAccountLayout()
-  },
-
-  methods: {
-
-    ...mapActions('account', [
-      'fetchAccountLayout'
-    ])
-
+    ServiceApiV1AccountLayoutGet()
+      .then(response => {
+        switch (response._status) {
+          case 200:
+            this.layout = response.layout
+            break
+          default:
+            this.layout = null
+        }
+      })
+      .catch(() => {
+        this.layout = null
+      })
   },
 
   computed: {

@@ -12,5 +12,5 @@ type ModelAccount struct {
 // ModelAccountLayout contains information of the layout on the frontpage.
 //
 type ModelAccountLayout struct {
-	Layout string `json:"layout"`
+	Layout *string `json:"layout"`
 }
