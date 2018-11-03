@@ -45,19 +45,6 @@ create table `t_group` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Table structure for table `t_group_permission`
---
-
-drop table if exists `t_group_permission`
-create table `t_group_permission` (
-  `c_account_id` bigint (10) unsigned not null,
-  `c_group_id`   bigint (10) unsigned not null,
-  `c_key`        int    (10) unsigned not null,
-  `c_value`      int    (10) unsigned not null,
-  primary key (`c_group_id`, `c_key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
 -- Table structure for table `t_user_belongs_to_group`
 --
 
@@ -69,7 +56,18 @@ create table `t_user_belongs_to_group` (
   primary key (`c_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Table structure for table `t_group_permission`
+--
 
+drop table if exists `t_group_permission`;
+create table `t_group_permission` (
+  `c_account_id` bigint (10) unsigned not null,
+  `c_group_id`   bigint (10) unsigned not null,
+  `c_key`        int    (10) unsigned not null,
+  `c_value`      int    (10) unsigned not null,
+  primary key (`c_group_id`, `c_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Table structure for table `t_folder`

@@ -3,7 +3,7 @@ package permission
 import (
 	"bytes"
 	"database/sql"
-	"reflect"
+	"fmt"
 	"strings"
 
 	"github.com/noteshare/mysql"
@@ -21,15 +21,12 @@ func LookupGroupPermission(permissionSet []uint32, session *session.Session) (*M
 	}
 
 	var queryBuffer = bytes.Buffer{}
-	var repeat = `(?` + strings.Repeat(",?", len(permissionSet)-1) + `)`
-	const query = `
-		select gp.c_key, gp.c_value from t_group_permission as gp
-		inner join t_user_belongs_to_group as ubtg on ubtg.c_group_id = gp.c_group_id
-		where ubtg.c_user_id = ? and gp.c_account_id = ? and gp.c_key in 
-	`
-
-	queryBuffer.WriteString(query)
-	queryBuffer.WriteString(repeat)
+	queryBuffer.WriteString(`select gp.c_key, gp.c_value from t_group_permission as gp `)
+	queryBuffer.WriteString(`inner join t_user_belongs_to_group as ubtg on ubtg.c_group_id = gp.c_group_id `)
+	queryBuffer.WriteString(`where ubtg.c_user_id = ? and gp.c_account_id = ? and gp.c_key in `)
+	queryBuffer.WriteString(`(%d`)
+	queryBuffer.WriteString(strings.Repeat(",%d", len(permissionSet)-1))
+	queryBuffer.WriteString(`)`)
 
 	ret := ModelPermissionSet{}
 	for _, v := range permissionSet {
@@ -39,19 +36,20 @@ func LookupGroupPermission(permissionSet []uint32, session *session.Session) (*M
 		}
 	}
 
+	interfacePermissionSet := make([]interface{}, len(permissionSet))
+	for i := range permissionSet {
+		interfacePermissionSet[i] = permissionSet[i]
+	}
+
 	db := mysql.Open()
 
-	stmt, err := db.Prepare(queryBuffer.String())
+	stmt, err := db.Prepare(fmt.Sprintf(queryBuffer.String(), interfacePermissionSet...))
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
 
-	rows, err := stmt.Query(
-		session.UserID,
-		session.AccountID,
-		reflect.ValueOf(permissionSet),
-	)
+	rows, err := stmt.Query(session.UserID, session.AccountID)
 	if err == sql.ErrNoRows {
 		return &ret, nil
 	} else if err != nil {
