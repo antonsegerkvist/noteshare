@@ -14,16 +14,22 @@ import (
 // LookupGroupPermission gets a list of permissions from the set of permission
 // keys.
 //
-func LookupGroupPermission(permissionSet []uint32, session *session.Session) (*ModelPermissionSet, error) {
+func LookupGroupPermission(
+	permissionSet []uint32,
+	session *session.Session,
+) (*ModelPermissionSet, error) {
 
 	if len(permissionSet) == 0 {
 		return &ModelPermissionSet{}, nil
 	}
 
 	var queryBuffer = bytes.Buffer{}
-	queryBuffer.WriteString(`select gp.c_key, gp.c_value from t_group_permission as gp `)
-	queryBuffer.WriteString(`inner join t_user_belongs_to_group as ubtg on ubtg.c_group_id = gp.c_group_id `)
-	queryBuffer.WriteString(`where ubtg.c_user_id = ? and gp.c_account_id = ? and gp.c_key in `)
+	queryBuffer.WriteString(`select gp.c_key, gp.c_value `)
+	queryBuffer.WriteString(`from t_group_permission as gp `)
+	queryBuffer.WriteString(`inner join t_user_belongs_to_group as ubtg `)
+	queryBuffer.WriteString(`on ubtg.c_group_id = gp.c_group_id `)
+	queryBuffer.WriteString(`where ubtg.c_user_id = ? and gp.c_account_id = ? `)
+	queryBuffer.WriteString(`and gp.c_key in `)
 	queryBuffer.WriteString(`(%d`)
 	queryBuffer.WriteString(strings.Repeat(",%d", len(permissionSet)-1))
 	queryBuffer.WriteString(`)`)
@@ -43,7 +49,12 @@ func LookupGroupPermission(permissionSet []uint32, session *session.Session) (*M
 
 	db := mysql.Open()
 
-	stmt, err := db.Prepare(fmt.Sprintf(queryBuffer.String(), interfacePermissionSet...))
+	stmt, err := db.Prepare(
+		fmt.Sprintf(
+			queryBuffer.String(),
+			interfacePermissionSet...,
+		),
+	)
 	if err != nil {
 		return nil, err
 	}

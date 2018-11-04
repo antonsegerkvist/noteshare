@@ -9,7 +9,8 @@ const (
 	// PermissionEditAccount specifies if a group can edit the account.
 	PermissionEditAccount = 0x00000000
 
-	// PermissionEditAccountLayout specifies if a group can edit the account layout.
+	// PermissionEditAccountLayout specifies if a group can edit the account
+	// layout.
 	PermissionEditAccountLayout = 0x00000001
 
 	//
@@ -26,6 +27,7 @@ const (
 	// FILE SETTINGS.
 	//
 
-	// PermissionAddFolder specifies if a group can add folders to the folder tree.
+	// PermissionAddFolder specifies if a group can add folders to the folder
+	// tree.
 	PermissionAddFolder = 0x02000000
 )

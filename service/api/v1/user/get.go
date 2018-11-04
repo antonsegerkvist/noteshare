@@ -17,7 +17,12 @@ import (
 // Get returns the users that are in the same account.
 //
 var Get = session.Authenticate(
-	func(w http.ResponseWriter, r *http.Request, p httprouter.Params, s session.Session) {
+	func(
+		w http.ResponseWriter,
+		r *http.Request,
+		p httprouter.Params,
+		s session.Session,
+	) {
 
 		if config.BuildDebug == true {
 			fmt.Println(`==> GET: /service/api/v1/user/:id`)

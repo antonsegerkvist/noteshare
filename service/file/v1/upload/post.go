@@ -97,13 +97,19 @@ var Post = session.Authenticate(
 		checksumOK := adler32Hash.Sum32()
 
 		if filesize != 0 && filesize != uint64(filesizeOK) {
-			log.NotifyError(errors.New(`Filesize missmatch`), http.StatusBadRequest)
+			log.NotifyError(
+				errors.New(`Filesize missmatch`),
+				http.StatusBadRequest,
+			)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
 			return
 		}
 
 		if checksum != 0 && checksum != uint32(checksumOK) {
-			log.NotifyError(errors.New(`Checksum missmatch`), http.StatusBadRequest)
+			log.NotifyError(
+				errors.New(`Checksum missmatch`),
+				http.StatusBadRequest,
+			)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
 			return
 		}

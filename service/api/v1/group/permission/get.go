@@ -17,7 +17,12 @@ import (
 // Get handles fetching of specific user permissions.
 //
 var Get = session.Authenticate(
-	func(w http.ResponseWriter, r *http.Request, p httprouter.Params, s session.Session) {
+	func(
+		w http.ResponseWriter,
+		r *http.Request,
+		p httprouter.Params,
+		s session.Session,
+	) {
 
 		if config.BuildDebug == true {
 			fmt.Println(`==> GET: /service/api/v1/group/permission`)

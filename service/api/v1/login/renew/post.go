@@ -23,7 +23,10 @@ func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	if r.Header.Get("Content-Type") != "application/json" {
-		log.NotifyError(errors.New(`Unsupported media-type`), http.StatusUnsupportedMediaType)
+		log.NotifyError(
+			errors.New(`Unsupported media-type`),
+			http.StatusUnsupportedMediaType,
+		)
 		log.RespondJSON(w, `{}`, http.StatusUnsupportedMediaType)
 		return
 	}

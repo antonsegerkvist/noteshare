@@ -66,17 +66,26 @@ var Post = session.Authenticate(
 		}
 
 		if utf8.RuneCountInString(requestData.Name) == 0 {
-			log.NotifyError(errors.New(`Missing JSON parameter: name`), http.StatusBadRequest)
+			log.NotifyError(
+				errors.New(`Missing JSON parameter: name`),
+				http.StatusBadRequest,
+			)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
 			return
 		}
 		if utf8.RuneCountInString(requestData.Filename) == 0 {
-			log.NotifyError(errors.New(`Missing JSON parameter: filename`), http.StatusBadRequest)
+			log.NotifyError(
+				errors.New(`Missing JSON parameter: filename`),
+				http.StatusBadRequest,
+			)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
 			return
 		}
 		if requestData.ToFolder == 0 {
-			log.NotifyError(errors.New(`Missing JSON parameter: toFolder`), http.StatusBadRequest)
+			log.NotifyError(
+				errors.New(`Missing JSON parameter: toFolder`),
+				http.StatusBadRequest,
+			)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
 			return
 		}

@@ -7,13 +7,23 @@ import (
 )
 
 //
-// GetFoldersFromFolderID returns a list of folder with the specified folder ID
-// as a parent.
+// GetFoldersFromFolderID returns a list of folder with the specified folder
+// id as a parent.
 //
-func GetFoldersFromFolderID(folderID, userID, accountID uint64) (*[]ModelFolder, error) {
+func GetFoldersFromFolderID(
+	folderID,
+	userID,
+	accountID uint64,
+) (*[]ModelFolder, error) {
 
 	const query = `
-		select c_id, c_parent, c_name, c_created_by_user_id, c_modified_by_user_id, c_created_date, c_modified_date
+		select c_id,
+			c_parent,
+			c_name,
+			c_created_by_user_id,
+			c_modified_by_user_id,
+			c_created_date,
+			c_modified_date
 		from t_folder where c_parent = ? and c_account_id = ?
 	`
 

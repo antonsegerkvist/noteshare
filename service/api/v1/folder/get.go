@@ -36,7 +36,11 @@ var Get = session.Authenticate(
 			return
 		}
 
-		folders, err := folder.GetFoldersFromFolderID(folderID, s.UserID, s.AccountID)
+		folders, err := folder.GetFoldersFromFolderID(
+			folderID,
+			s.UserID,
+			s.AccountID,
+		)
 		if err != nil {
 			log.NotifyError(err, http.StatusInternalServerError)
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
