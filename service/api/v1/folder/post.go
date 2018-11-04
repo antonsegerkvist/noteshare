@@ -15,7 +15,7 @@ import (
 )
 
 //
-// PostRequestData contains the fields needed
+// PostRequestData contains the fields needed to create a new folder.
 //
 type PostRequestData struct {
 	Name string `json:"name"`
@@ -34,7 +34,12 @@ func (rd *PostRequestData) ParseRequest(reader io.ReadCloser) error {
 // Post adds a single folder as a child to the specified folder id.
 //
 var Post = session.Authenticate(
-	func(w http.ResponseWriter, r *http.Request, p httprouter.Params, s session.Session) {
+	func(
+		w http.ResponseWriter,
+		r *http.Request,
+		p httprouter.Params,
+		s session.Session,
+	) {
 
 		if config.BuildDebug == true {
 			fmt.Println(`==> POST: /service/api/v1/folder/:id`)

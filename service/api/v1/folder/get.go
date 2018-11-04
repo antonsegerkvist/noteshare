@@ -18,7 +18,12 @@ import (
 // user has access to.
 //
 var Get = session.Authenticate(
-	func(w http.ResponseWriter, r *http.Request, p httprouter.Params, s session.Session) {
+	func(
+		w http.ResponseWriter,
+		r *http.Request,
+		p httprouter.Params,
+		s session.Session,
+	) {
 
 		if config.BuildDebug == true {
 			fmt.Println(`==> GET: /service/api/v1/folder/:id`)

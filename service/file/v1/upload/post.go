@@ -27,17 +27,15 @@ type ResponseData struct {
 // Post handles file uploads.
 //
 var Post = session.Authenticate(
-	func(w http.ResponseWriter, r *http.Request, p httprouter.Params, s session.Session) {
+	func(
+		w http.ResponseWriter,
+		r *http.Request,
+		p httprouter.Params,
+		s session.Session,
+	) {
 
 		if config.BuildDebug == true {
 			fmt.Println(`==> POST: /service/file/v1/upload/:fid`)
-		}
-
-		userID, err := strconv.ParseUint(s.Id, 10, 64)
-		if err != nil {
-			log.NotifyError(err, http.StatusUnauthorized)
-			log.RespondJSON(w, `{}`, http.StatusUnauthorized)
-			return
 		}
 
 		fileID, err := strconv.ParseUint(p.ByName("fid"), 10, 64)
@@ -47,7 +45,7 @@ var Post = session.Authenticate(
 			return
 		}
 
-		err = file.LookupUnprocessedFileFromUserID(fileID, userID)
+		err = file.LookupUploadFile(fileID, &s)
 		if err == file.ErrFileNotFound {
 			log.NotifyError(err, http.StatusNotFound)
 			log.RespondJSON(w, `{}`, http.StatusNotFound)

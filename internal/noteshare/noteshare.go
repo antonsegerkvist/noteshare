@@ -11,6 +11,8 @@ import (
 	service_api_v1_account_layout "github.com/noteshare/service/api/v1/account/layout"
 	service_api_v1_account_me "github.com/noteshare/service/api/v1/account/me"
 
+	service_api_v1_file "github.com/noteshare/service/api/v1/file"
+
 	service_api_v1_folder "github.com/noteshare/service/api/v1/folder"
 
 	service_api_v1_group_permission "github.com/noteshare/service/api/v1/group/permission"
@@ -36,6 +38,8 @@ func Run() {
 
 	service_api_v1_account_layout.Mount(router)
 	service_api_v1_account_me.Mount(router)
+
+	service_api_v1_file.Mount(router)
 
 	service_api_v1_folder.Mount(router)
 
