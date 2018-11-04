@@ -2,6 +2,7 @@ package file
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -19,9 +20,10 @@ import (
 //
 type PostRequestData struct {
 	Name     string `json:"name"`
+	Filename string `json:"filename"`
 	ToFolder uint64 `json:"toFolder"`
 	Filesize uint64 `json:"filesize"`
-	Checksum uint64 `json:"checksum"`
+	Checksum uint32 `json:"checksum"`
 }
 
 //
@@ -64,12 +66,17 @@ var Post = session.Authenticate(
 		}
 
 		if utf8.RuneCountInString(requestData.Name) == 0 {
-			log.NotifyError(err, http.StatusBadRequest)
+			log.NotifyError(errors.New(`Missing JSON parameter: name`), http.StatusBadRequest)
+			log.RespondJSON(w, `{}`, http.StatusBadRequest)
+			return
+		}
+		if utf8.RuneCountInString(requestData.Filename) == 0 {
+			log.NotifyError(errors.New(`Missing JSON parameter: filename`), http.StatusBadRequest)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
 			return
 		}
 		if requestData.ToFolder == 0 {
-			log.NotifyError(err, http.StatusBadRequest)
+			log.NotifyError(errors.New(`Missing JSON parameter: toFolder`), http.StatusBadRequest)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
 			return
 		}
@@ -77,6 +84,7 @@ var Post = session.Authenticate(
 		responseData := PostResponseData{}
 		responseData.FileID, err = file.PostFile(
 			requestData.Name,
+			requestData.Filename,
 			requestData.ToFolder,
 			requestData.Filesize,
 			requestData.Checksum,

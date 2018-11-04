@@ -10,16 +10,18 @@ import (
 //
 func PostFile(
 	name string,
+	filename string,
 	toFolder uint64,
 	filesize uint64,
-	checksum uint64,
+	checksum uint32,
 	session *session.Session,
 ) (uint64, error) {
 
 	const query = `
 		insert into t_file
 		(c_account_id, c_type, c_filename, c_name, c_filesize, c_checksum, c_created_by_user_id, c_modified_by_user_id)
-		values (?, 0, '', ?, ?, ?, ?, ?)
+		values
+		(?, 0, '', ?, ?, ?, ?, ?)
 	`
 
 	db := mysql.Open()

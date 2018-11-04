@@ -2,7 +2,9 @@ package upload
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"hash/adler32"
 	"io"
 	"net/http"
 	"os"
@@ -20,7 +22,8 @@ import (
 // ResponseData contains the fields of a response.
 //
 type ResponseData struct {
-	Checksum int64 `json:"checksum"`
+	Filesize uint64 `json:"filesize"`
+	Checksum uint32 `json:"checksum"`
 }
 
 //
@@ -45,7 +48,7 @@ var Post = session.Authenticate(
 			return
 		}
 
-		err = file.LookupUploadFile(fileID, &s)
+		filesize, checksum, err := file.LookupUploadFile(fileID, &s)
 		if err == file.ErrFileNotFound {
 			log.NotifyError(err, http.StatusNotFound)
 			log.RespondJSON(w, `{}`, http.StatusNotFound)
@@ -56,7 +59,7 @@ var Post = session.Authenticate(
 			return
 		}
 
-		file, err := os.Create(
+		fds, err := os.Create(
 			path.Join(
 				config.FileRootDir,
 				config.FileOriginalDir,
@@ -68,16 +71,59 @@ var Post = session.Authenticate(
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 			return
 		}
-		defer file.Close()
+		defer fds.Close()
 
-		checksum, err := io.Copy(file, r.Body)
+		filesizeOK, err := io.Copy(fds, r.Body)
 		if err != nil {
 			log.NotifyError(err, http.StatusInternalServerError)
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 			return
 		}
 
-		responseData := ResponseData{Checksum: checksum}
+		_, err = fds.Seek(0, 0)
+		if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
+			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
+			return
+		}
+
+		adler32Hash := adler32.New()
+		_, err = io.Copy(adler32Hash, fds)
+		if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
+			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
+			return
+		}
+		checksumOK := adler32Hash.Sum32()
+
+		if filesize != 0 && filesize != uint64(filesizeOK) {
+			log.NotifyError(errors.New(`Filesize missmatch`), http.StatusBadRequest)
+			log.RespondJSON(w, `{}`, http.StatusBadRequest)
+			return
+		}
+
+		if checksum != 0 && checksum != uint32(checksumOK) {
+			log.NotifyError(errors.New(`Checksum missmatch`), http.StatusBadRequest)
+			log.RespondJSON(w, `{}`, http.StatusBadRequest)
+			return
+		}
+
+		err = file.MarkFileAsUploaded(
+			fileID,
+			uint64(filesizeOK),
+			uint32(checksumOK),
+			&s,
+		)
+		if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
+			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
+			return
+		}
+
+		responseData := ResponseData{
+			Filesize: uint64(filesizeOK),
+			Checksum: checksumOK,
+		}
 		jsonBytes, err := json.Marshal(responseData)
 		if err != nil {
 			log.NotifyError(err, http.StatusInternalServerError)

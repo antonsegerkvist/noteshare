@@ -115,7 +115,7 @@ create table `t_file` (
   `c_name`                varchar (256) not null,
   `c_filename`            varchar (256) not null,
   `c_filesize`            bigint  (10)  unsigned not null,
-  `c_checksum`            bigint  (10)  unsigned not null,
+  `c_checksum`            int     (10)  unsigned not null,
   `c_created_by_user_id`  bigint  (10)  unsigned not null,
   `c_modified_by_user_id` bigint  (10)  unsigned not null,
   `c_created_date`        datetime not null default CURRENT_TIMESTAMP,
