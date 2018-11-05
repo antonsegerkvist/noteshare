@@ -1,10 +1,10 @@
 import Vue from 'vue'
+import router from '@/routers/editor/router.js'
 import Editor from '@/apps/Editor.vue'
-import '@/components/_global'
-import '@/components/home'
 
 Vue.config.productionTip = false
 
 new Vue({
+  router,
   render: h => h(Editor)
 }).$mount('#app')

@@ -6,7 +6,7 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 
-	frontend "github.com/noteshare/frontend"
+	fs "github.com/noteshare/fs"
 
 	service_api_v1_account_layout "github.com/noteshare/service/api/v1/account/layout"
 	service_api_v1_account_me "github.com/noteshare/service/api/v1/account/me"
@@ -34,7 +34,7 @@ func Run() {
 
 	router := httprouter.New()
 
-	frontend.Mount(router)
+	fs.Mount(router)
 
 	service_api_v1_account_layout.Mount(router)
 	service_api_v1_account_me.Mount(router)
