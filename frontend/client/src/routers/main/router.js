@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import ViewDefault from '@/views/Default.vue'
-import ViewLogin from '@/views/Login.vue'
-import ViewSubviewFile from '@/views/subviews/File.vue'
-import ViewSubviewHome from '@/views/subviews/Home.vue'
-import ViewSubviewMe from '@/views/subviews/Me.vue'
-import ViewSubviewShop from '@/views/subviews/Shop.vue'
+import ViewDefault from '@/views/main/Default.vue'
+import ViewLogin from '@/views/main/Login.vue'
+import ViewSubviewFile from '@/views/main/subviews/File.vue'
+import ViewSubviewHome from '@/views/main/subviews/Home.vue'
+import ViewSubviewMe from '@/views/main/subviews/Me.vue'
+import ViewSubviewShop from '@/views/main/subviews/Shop.vue'
 
 Vue.use(Router)
 

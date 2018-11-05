@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import App from '@/apps/App.vue'
+import router from '@/routers/main/router'
+import store from '@/stores/main/store'
 import '@/components/_global'
 import '@/components/home'
 

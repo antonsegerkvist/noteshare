@@ -12,6 +12,20 @@
         </div>
       </div>
       <div class="body">
+        <div class="navigation">
+          <div class="entry">
+            <div class="icon">
+              <i class="material-icons">
+                bar_chart
+              </i>
+            </div>
+            <div class="title">
+              <p>{{ getProfileTitle }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+        </div>
       </div>
     </div>
   </div>
@@ -40,6 +54,16 @@ export default Vue.extend({
         case 'en':
         default:
           return 'Profile'
+      }
+    },
+
+    getProfileTitle () {
+      switch (this.$route.params.lang) {
+        case 'se':
+          return 'Din profil'
+        case 'en':
+        default:
+          return 'Your profile'
       }
     }
 
@@ -121,6 +145,72 @@ export default Vue.extend({
       position: absolute;
       right: 0;
       top: 40px;
+
+      & > .navigation {
+        background-color: #333;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 200px;
+
+        & > .entry {
+          cursor: pointer;
+          height: 30px;
+          position: relative;
+          width: 100%;
+
+          &:hover {
+            background-color: #444;
+          }
+
+          & > .icon {
+            bottom: 0;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 30px;
+
+            & > i {
+              color: #eee;
+              left: 50%;
+              font-size: 20px;
+              position: absolute;
+              top: 50%;
+              transform: translate(-50%,-50%);
+            }
+
+          }
+
+          & > .title {
+            bottom: 0;
+            left: 30px;
+            line-height: 30px;
+            position: absolute;
+            right: 0;
+            top: 0;
+
+            & > p {
+              color: #eee;
+              font-family: Arial, Helvetica, sans-serif;
+              font-size: 14px;
+              font-weight: bold;
+            }
+
+          }
+
+        }
+
+      }
+
+      & > .container {
+        bottom: 0;
+        left: 200px;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
     }
 
   }

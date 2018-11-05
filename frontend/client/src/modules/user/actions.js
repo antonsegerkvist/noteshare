@@ -1,21 +1,21 @@
-import { ServiceApiV1AccountMeGet } from '@/service/api/v1/account/me/get'
+import { ServiceApiV1UserGet } from '@/service/api/v1/user/get'
 
 const actions = {
 
-  fetchAccount ({ state }) {
-    ServiceApiV1AccountMeGet()
+  fetchUserMe ({ state }) {
+    ServiceApiV1UserGet(`me`)
       .then(response => {
         switch (response._status) {
           case 200:
             delete response._status
-            state.account = response
+            state.user = response
             break
           default:
-            state.account = {}
+            state.user = {}
         }
       })
       .catch(() => {
-        state.account = {}
+        state.user = {}
       })
   }
 

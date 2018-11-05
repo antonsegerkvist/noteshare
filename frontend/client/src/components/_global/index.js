@@ -1,4 +1,4 @@
 import Vue from 'vue'
-import GlobalEditorTinyMCE from '@/components/_global/editor/TinyMCE.vue'
+import GlobalFormInput from '@/components/_global/form/Input.vue'
 
-Vue.component('global-editor-tinymce', GlobalEditorTinyMCE)
+Vue.component('global-form-input', GlobalFormInput)

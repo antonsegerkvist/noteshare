@@ -82,9 +82,13 @@ export default Vue.extend({
     }
   },
 
+  created () {
+    this.fetchAccount()
+    this.fetchUserMe()
+  },
+
   mounted () {
     window.addEventListener('click', this.click)
-    this.fetchAccount()
   },
 
   beforeDestroy () {
@@ -95,6 +99,10 @@ export default Vue.extend({
 
     ...mapActions('account', [
       'fetchAccount'
+    ]),
+
+    ...mapActions('user', [
+      'fetchUserMe'
     ]),
 
     pushRoute (path) {

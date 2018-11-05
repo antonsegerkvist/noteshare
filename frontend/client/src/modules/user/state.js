@@ -1,10 +1,10 @@
 const state = {
 
   //
-  // Account information.
+  // User information.
   //
 
-  account: {}
+  user: {}
 
 }
 
