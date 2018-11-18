@@ -1,12 +1,13 @@
 <template>
   <div id="app">
-    <router-view/>
+    <Default/>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-export default Vue.extend({})
+import Default from '@/views/editor/Default.vue'
+export default Vue.extend({ components: { Default } })
 </script>
 
 <style lang="scss">
