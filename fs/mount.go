@@ -19,7 +19,7 @@ func Mount(router *httprouter.Router) {
 		"/frontend/*filepath",
 		session.FileSystemAuthenticate(
 			GetClient,
-			"/login",
+			"/login/",
 		),
 	)
 }
