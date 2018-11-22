@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import ViewDefault from '@/views/main/Default.vue'
-import ViewLogin from '@/views/main/Login.vue'
 import ViewSubviewFile from '@/views/main/subviews/File.vue'
 import ViewSubviewHome from '@/views/main/subviews/Home.vue'
 import ViewSubviewMe from '@/views/main/subviews/Me.vue'
@@ -14,17 +13,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/en/login'
-    },
-
-    //
-    // Login page.
-    //
-
-    {
-      path: '/:lang/login',
-      name: 'login',
-      component: ViewLogin
+      redirect: '/en'
     },
 
     //

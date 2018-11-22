@@ -46,7 +46,7 @@ export default Vue.extend({
           const lang = this.$route.params.lang
           switch (response._status) {
             case 200:
-              this.$router.push({ path: `/${lang}` })
+              window.location.href = (process.env.NODE_ENV === 'production' ? `/frontend/#/${lang}` : `//localhost:8083/#/${lang}`)
           }
         })
         .catch(() => {

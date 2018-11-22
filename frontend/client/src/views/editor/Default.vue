@@ -18,6 +18,12 @@ export default Vue.extend({
     EditorEditor,
     EditorNavigation,
     EditorToolbar
+  },
+
+  data () {
+    return {
+      pages: []
+    }
   }
 
 })

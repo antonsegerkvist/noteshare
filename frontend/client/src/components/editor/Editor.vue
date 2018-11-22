@@ -13,6 +13,17 @@
 import Vue from 'vue'
 export default Vue.extend({
 
+  props: {
+
+    pages: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
+
+  },
+
   created () {
     document.execCommand('defaultParagraphSeparator', false, 'p')
   }
@@ -42,8 +53,9 @@ export default Vue.extend({
       background-color: rgb(161, 161, 161);
       border: 1px solid #000;
       bottom: 0;
+      box-sizing: border-box;
       left: 27px;
-      min-width: 500px;
+      min-width: 673px;
       position: absolute;
       right: 0;
       top: 27px;
@@ -57,8 +69,8 @@ export default Vue.extend({
         position: absolute;
         top: 50%;
         transform: translate(-50%, -50%);
-        height: 700px;
-        width: 500px;
+        height: 800px;
+        width: 673px;
 
         &:focus {
           box-shadow: none;
