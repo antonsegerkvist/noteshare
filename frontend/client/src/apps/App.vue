@@ -28,7 +28,7 @@ export default Vue.extend({
               resolve(axios(error.config))
             })
             .catch((renewError) => {
-              $router.push({ path: `/${lang}/login` })
+              window.location = (process.env.NODE_ENV === 'production' ? `/login/#/${lang}` : `//localhost:8082/#/${lang}`)
               reject(renewError)
             })
         })
