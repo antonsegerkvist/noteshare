@@ -30,7 +30,7 @@
             <p>{{ getAdministrateTitle }}</p>
           </div>
         </div>
-        <div @click="() => { pushRoute('/login') }" class="entry">
+        <div @click="performLogout" class="entry">
           <div class="icon">
             <i class="material-icons">
               exit_to_app
@@ -107,6 +107,10 @@ export default Vue.extend({
 
     pushRoute (path) {
       this.$router.push({ path: `/${this.$route.params.lang}${path}` })
+    },
+
+    performLogout () {
+      window.location = (process.env.NODE_ENV === 'production' ? `/login/#/${this.$route.params.lang}` : `//localhost:8082/#/${this.$route.params.lang}`)
     },
 
     click (event) {

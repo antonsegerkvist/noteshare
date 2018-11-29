@@ -15,7 +15,6 @@ export default Vue.extend({
 
   created () {
     const lang = this.$route.params.lang
-    const $router = this.$router
     axios.interceptors.response.use(function (response) {
       return response
     }, function (error) {

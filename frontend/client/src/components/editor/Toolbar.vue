@@ -1,8 +1,16 @@
 <template>
   <div class="editor-toolbar">
     <div class="row-one">
+      <div class="button">
+      </div>
+      <div class="button">
+      </div>
     </div>
     <div class="row-two">
+      <div class="button">
+      </div>
+      <div class="button">
+      </div>
     </div>
   </div>
 </template>
@@ -15,7 +23,7 @@ export default Vue.extend({})
 <style lang="scss" scoped>
 .editor-toolbar {
   background-color: #fff;
-  height: 100px;
+  height: 50px;
   left: 0;
   position: absolute;
   right: 0;
@@ -24,14 +32,20 @@ export default Vue.extend({})
 
   & > .row-one {
     float: left;
-    height: 50px;
+    height: 30px;
     width: 100%;
   }
 
   & > .row-two {
     float: left;
-    height: 50px;
+    height: 30px;
     width: 100%;
+  }
+
+  & > .row-one > .button, .row-two > .button {
+    float: left;
+    height: 100%;
+    width: 30px;
   }
 
 }
