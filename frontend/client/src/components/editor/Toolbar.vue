@@ -23,7 +23,7 @@ export default Vue.extend({})
 <style lang="scss" scoped>
 .editor-toolbar {
   background-color: #fff;
-  height: 50px;
+  height: 60px;
   left: 0;
   position: absolute;
   right: 0;
