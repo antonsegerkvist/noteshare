@@ -25,7 +25,7 @@
         class="document-background">
         <div
           v-for="(page, index) in document.pages"
-          @keyup="keyup"
+          @keyup="(event) => { keyup(event, index) }"
           :key="index"
           :style="{
             height: document.metadata.height + 'px',
@@ -52,6 +52,11 @@ const rulerAreaWidth = 27
 export default Vue.extend({
 
   props: {
+
+    zoom: {
+      type: Number,
+      default: () => { return 1.0 }
+    },
 
     document: {
       type: Object,
@@ -89,7 +94,8 @@ export default Vue.extend({
       }
     },
 
-    keyup (event) {
+    keyup (event, index) {
+      console.log(index)
       console.log(event)
     }
 

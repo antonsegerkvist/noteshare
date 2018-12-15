@@ -17,7 +17,7 @@
 
 <script>
 import Vue from 'vue'
-import HomeLayout from '@/components/home/Layout.vue'
+import HomeLayout from '@/components/main/home/Layout.vue'
 export default Vue.extend({
 
   name: 'home-sublayout-two-column',

@@ -29,10 +29,10 @@
 
 <script>
 import Vue from 'vue'
-import NavigationButton from '@/components/navigation/Button.vue'
-import NavigationMe from '@/components/navigation/Me.vue'
-import NavigationFile from '@/components/navigation/File.vue'
-import NavigationShop from '@/components/navigation/Shop.vue'
+import NavigationButton from '@/components/main/navigation/Button.vue'
+import NavigationMe from '@/components/main/navigation/Me.vue'
+import NavigationFile from '@/components/main/navigation/File.vue'
+import NavigationShop from '@/components/main/navigation/Shop.vue'
 export default Vue.extend({
 
   components: {

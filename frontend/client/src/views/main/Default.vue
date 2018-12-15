@@ -62,9 +62,9 @@
 
 <script>
 import Vue from 'vue'
-import NavigationMain from '@/components/navigation/Main.vue'
-import SettingAdministrator from '@/components/setting/Administrator.vue'
-import SettingProfile from '@/components/setting/Profile.vue'
+import NavigationMain from '@/components/main/navigation/Main.vue'
+import SettingAdministrator from '@/components/main/setting/Administrator.vue'
+import SettingProfile from '@/components/main/setting/Profile.vue'
 import { mapActions } from 'vuex'
 export default Vue.extend({
 
