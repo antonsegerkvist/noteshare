@@ -5,7 +5,6 @@ import ViewDefault from '@/views/main/Default.vue'
 import ViewSubviewFile from '@/views/main/subviews/File.vue'
 import ViewSubviewHome from '@/views/main/subviews/Home.vue'
 import ViewSubviewMe from '@/views/main/subviews/Me.vue'
-import ViewSubviewShop from '@/views/main/subviews/Shop.vue'
 
 Vue.use(Router)
 
@@ -38,11 +37,6 @@ export default new Router({
           path: 'file',
           name: 'file',
           component: ViewSubviewFile
-        },
-        {
-          path: 'shop',
-          name: 'shop',
-          component: ViewSubviewShop
         }
       ]
     }
