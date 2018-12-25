@@ -8,7 +8,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
-	"github.com/noteshare/model/account"
+	modelaccount "github.com/noteshare/model/account"
 	"github.com/noteshare/session"
 )
 
@@ -24,11 +24,11 @@ var Get = session.Authenticate(
 	) {
 
 		if config.BuildDebug == true {
-			fmt.Println(`==> GET: /service/api/v1/account/me`)
+			fmt.Println(`==> GET: ` + r.URL.Path)
 		}
 
-		response, err := account.GetAccount(s.AccountID)
-		if err == account.ErrAccountNotFound {
+		response, err := modelaccount.GetAccount(s.AccountID)
+		if err == modelaccount.ErrAccountNotFound {
 			log.NotifyError(err, http.StatusNotFound)
 			log.RespondJSON(w, `{}`, http.StatusNotFound)
 			return

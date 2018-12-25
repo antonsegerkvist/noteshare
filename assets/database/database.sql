@@ -101,6 +101,22 @@ create table `t_folder` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Table structure for table `t_file_upload`
+--
+drop table if exists `t_file_upload`;
+create table `t_file_upload` (
+  `c_id`           bigint  (10)  unsigned not null auto_increment,
+  `c_account_id`   bigint  (10)  unsigned not null,
+  `c_name`         varchar (256) not null,
+  `c_filename`     varchar (256) not null,
+  `c_filesize`     bigint  (10)  unsigned not null,
+  `c_checksum`     int     (10)  unsigned not null,
+  `c_user_id`      bigint  (10)  unsigned not null,
+  `c_created_date` datetime not null default CURRENT_TIMESTAMP,
+  primary key (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
 -- Table structure for table `t_file`
 --
 
@@ -108,7 +124,6 @@ drop table if exists `t_file`;
 create table `t_file` (
   `c_id`                  bigint  (10)  unsigned not null auto_increment,
   `c_account_id`          bigint  (10)  unsigned not null,
-  `c_is_uploaded`         tinyint (8)   unsigned not null default 0,
   `c_is_processed`        tinyint (8)   unsigned not null default 0,
   `c_has_preview`         tinyint (8)   unsigned not null default 0,
   `c_type`                bigint  (10)  unsigned not null,

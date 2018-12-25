@@ -3,6 +3,14 @@ package permission
 import "github.com/noteshare/session"
 
 //
+// ModelPermissionSetJSON contains a collection of permissions that can be
+// converted to json.
+//
+type ModelPermissionSetJSON struct {
+	Permissions []ModelPermission `json:"permissions"`
+}
+
+//
 // LookupGroupPermissionJSON gets a list of permissions from the set of
 // permission keys.
 //

@@ -8,6 +8,14 @@ import (
 )
 
 //
+// ModelLogin contains the data required during login.
+//
+type ModelLogin struct {
+	AccountID uint64
+	UserID    uint64
+}
+
+//
 // PerformLogin checks if the email and password exists in the database and
 // returns the login model data accosiated with it.
 //
@@ -34,6 +42,7 @@ func PerformLogin(email, password string) (*ModelLogin, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer stmt.Close()
 
 	ret := &ModelLogin{}
 	row := stmt.QueryRow(email, password)

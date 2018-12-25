@@ -7,6 +7,13 @@ import (
 )
 
 //
+// ModelAccountLayout contains information of the account layout.
+//
+type ModelAccountLayout struct {
+	Layout *string `json:"layout"`
+}
+
+//
 // GetAccountLayout returns the account layout for the user.
 //
 func GetAccountLayout(accountID uint64) (*ModelAccountLayout, error) {
@@ -42,5 +49,33 @@ func GetAccountLayout(accountID uint64) (*ModelAccountLayout, error) {
 	}
 
 	return &ret, nil
+
+}
+
+//
+// UpdateAccountLayout updates the account layout object.
+//
+func UpdateAccountLayout(json string, accountID uint64) error {
+
+	const query = `
+		update t_account
+		set c_layout = ?
+		where c_id = ?
+	`
+
+	db := mysql.Open()
+
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(json, accountID)
+	if err != nil {
+		return err
+	}
+
+	return nil
 
 }

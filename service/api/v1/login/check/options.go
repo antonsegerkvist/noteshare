@@ -16,7 +16,7 @@ import (
 func Options(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	if config.BuildDebug == true {
-		fmt.Println(`==> OPTIONS: /service/api/v1/login/check`)
+		fmt.Println(`==> OPTIONS: ` + r.URL.Path)
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")

@@ -11,7 +11,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
-	"github.com/noteshare/model/file"
+	modelfile "github.com/noteshare/model/file"
 	"github.com/noteshare/session"
 )
 
@@ -54,7 +54,13 @@ var Post = session.Authenticate(
 	) {
 
 		if config.BuildDebug == true {
-			fmt.Println(`==> POST: /service/api/v1/file`)
+			fmt.Println(`==> POST: ` + r.URL.Path)
+		}
+
+		if r.Header.Get("Content-Type") != "application/json" {
+			log.NotifyError(errors.New(`Unsupported media-type`), http.StatusUnsupportedMediaType)
+			log.RespondJSON(w, `{}`, http.StatusUnsupportedMediaType)
+			return
 		}
 
 		requestData := PostRequestData{}
@@ -91,13 +97,14 @@ var Post = session.Authenticate(
 		}
 
 		responseData := PostResponseData{}
-		responseData.FileID, err = file.PostFile(
+		responseData.FileID, err = modelfile.PostFile(
 			requestData.Name,
 			requestData.Filename,
 			requestData.ToFolder,
 			requestData.Filesize,
 			requestData.Checksum,
-			&s,
+			s.AccountID,
+			s.UserID,
 		)
 		if err != nil {
 			log.NotifyError(err, http.StatusInternalServerError)

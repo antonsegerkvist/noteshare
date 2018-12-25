@@ -11,6 +11,19 @@ import (
 )
 
 //
+// ModelPermission contains a single permission entry
+//
+type ModelPermission struct {
+	Key   uint32 `json:"key"`
+	Value uint32 `json:"value"`
+}
+
+//
+// ModelPermissionSet contains a collection of permission entries.
+//
+type ModelPermissionSet map[uint32]ModelPermission
+
+//
 // LookupGroupPermission gets a list of permissions from the set of permission
 // keys.
 //

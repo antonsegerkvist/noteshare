@@ -43,7 +43,7 @@ func (post *PostData) ParseRequestBody(request *http.Request) error {
 func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	if config.BuildDebug == true {
-		fmt.Println(`==> POST: /service/api/v1/login`)
+		fmt.Println(`==> POST: ` + r.URL.Path)
 	}
 
 	if r.Header.Get("Content-Type") != "application/json" {

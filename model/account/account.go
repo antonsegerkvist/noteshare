@@ -7,6 +7,14 @@ import (
 )
 
 //
+// ModelAccount contains information of a single account.
+//
+type ModelAccount struct {
+	ID   uint64 `json:"id"`
+	Name string `json:"name"`
+}
+
+//
 // GetAccount returns the account the sepcified user belongs to.
 //
 func GetAccount(accountID uint64) (*ModelAccount, error) {

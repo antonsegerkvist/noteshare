@@ -23,14 +23,11 @@ var Post = session.Authenticate(
 	) {
 
 		if config.BuildDebug == true {
-			fmt.Println(`==> POST: /service/api/v1/login/check`)
+			fmt.Println(`==> POST: ` + r.URL.Path)
 		}
 
 		if r.Header.Get("Content-Type") != "application/json" {
-			log.NotifyError(
-				errors.New(`Unsupported media-type`),
-				http.StatusUnsupportedMediaType,
-			)
+			log.NotifyError(errors.New(`Unsupported media-type`), http.StatusUnsupportedMediaType)
 			log.RespondJSON(w, `{}`, http.StatusUnsupportedMediaType)
 			return
 		}

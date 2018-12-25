@@ -1,38 +1,39 @@
-package folder
+package layout
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
-	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
-	modelfolder "github.com/noteshare/model/folder"
+	modellayout "github.com/noteshare/model/account"
 	"github.com/noteshare/session"
 )
 
 //
-// PostRequestData contains the fields needed to create a new folder.
+// PostRequestData contains the expected fields of the json body.
 //
 type PostRequestData struct {
-	Name string `json:"name"`
+	Layout string `json:"layout"`
 }
 
 //
-// ParseRequest parses the request into the fields.
+// ParseRequest parses the request json body into the structure fields.
 //
-func (rd *PostRequestData) ParseRequest(reader io.ReadCloser) error {
-	decoder := json.NewDecoder(reader)
+func (rd *PostRequestData) ParseRequest(r *http.Request) error {
+	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(rd)
-	return err
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 //
-// Post adds a single folder as a child to the specified folder id.
+// Post updates the account layout that the user is a part of.
 //
 var Post = session.Authenticate(
 	func(
@@ -52,27 +53,15 @@ var Post = session.Authenticate(
 			return
 		}
 
-		folderID, err := strconv.ParseUint(p.ByName("id"), 10, 64)
-		if err != nil {
-			log.NotifyError(err, http.StatusBadRequest)
-			log.RespondJSON(w, `{}`, http.StatusBadRequest)
-			return
-		}
-
 		requestData := PostRequestData{}
-		err = requestData.ParseRequest(r.Body)
+		err := requestData.ParseRequest(r)
 		if err != nil {
 			log.NotifyError(err, http.StatusBadRequest)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
 			return
 		}
 
-		err = modelfolder.AddFolder(
-			requestData.Name,
-			folderID,
-			s.UserID,
-			s.AccountID,
-		)
+		err = modellayout.UpdateAccountLayout(requestData.Layout, s.AccountID)
 		if err != nil {
 			log.NotifyError(err, http.StatusInternalServerError)
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
@@ -80,6 +69,5 @@ var Post = session.Authenticate(
 		}
 
 		log.RespondJSON(w, `{}`, http.StatusOK)
-
 	},
 )

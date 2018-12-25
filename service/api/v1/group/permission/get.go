@@ -25,7 +25,7 @@ var Get = session.Authenticate(
 	) {
 
 		if config.BuildDebug == true {
-			fmt.Println(`==> GET: /service/api/v1/group/permission`)
+			fmt.Println(`==> GET: ` + r.URL.Path)
 		}
 
 		var keys = []uint32{}

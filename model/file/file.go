@@ -1,12 +1,10 @@
 package file
 
-import (
-	"github.com/noteshare/mysql"
-	"github.com/noteshare/session"
-)
+import "github.com/noteshare/mysql"
 
 //
-// PostFile saves a notification of a file upload to the database.
+// PostFile saves a notification of a file upload to the database and
+// generates a file upload id.
 //
 func PostFile(
 	name string,
@@ -14,14 +12,15 @@ func PostFile(
 	toFolder uint64,
 	filesize uint64,
 	checksum uint32,
-	session *session.Session,
+	accountID uint64,
+	userID uint64,
 ) (uint64, error) {
 
 	const query = `
-		insert into t_file
-		(c_account_id, c_type, c_filename, c_name, c_filesize, c_checksum, c_created_by_user_id, c_modified_by_user_id)
+		insert into t_file_upload
+		(c_account_id, c_name, c_filename, c_filesize, c_checksum, c_user_id)
 		values
-		(?, 0, '', ?, ?, ?, ?, ?)
+		(?, ?, ?, ?, ?, ?, ?)
 	`
 
 	db := mysql.Open()
@@ -33,12 +32,12 @@ func PostFile(
 	defer stmt.Close()
 
 	result, err := stmt.Exec(
-		session.AccountID,
+		accountID,
 		name,
+		filename,
 		filesize,
 		checksum,
-		session.UserID,
-		session.UserID,
+		userID,
 	)
 	if err != nil {
 		return 0, err
