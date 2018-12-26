@@ -20,7 +20,7 @@ func Options(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH")
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE, GET, PATCH, POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Origin")
 	log.RespondJSON(w, ``, http.StatusOK)
 }

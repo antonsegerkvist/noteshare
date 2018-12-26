@@ -194,9 +194,9 @@ func MoveFolder(
 }
 
 //
-// RemoveFolder removes a folder from the specified folder id.
+// DeleteFolder removes a folder from the specified folder id.
 //
-func RemoveFolder(
+func DeleteFolder(
 	folderID,
 	userID,
 	accountID uint64,

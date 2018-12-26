@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -23,8 +24,8 @@ type PostRequestData struct {
 //
 // ParseRequest parses the request json body into the structure fields.
 //
-func (rd *PostRequestData) ParseRequest(r *http.Request) error {
-	decoder := json.NewDecoder(r.Body)
+func (rd *PostRequestData) ParseRequest(reader io.ReadCloser) error {
+	decoder := json.NewDecoder(reader)
 	err := decoder.Decode(rd)
 	if err != nil {
 		return err
@@ -54,7 +55,7 @@ var Post = session.Authenticate(
 		}
 
 		requestData := PostRequestData{}
-		err := requestData.ParseRequest(r)
+		err := requestData.ParseRequest(r.Body)
 		if err != nil {
 			log.NotifyError(err, http.StatusBadRequest)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
