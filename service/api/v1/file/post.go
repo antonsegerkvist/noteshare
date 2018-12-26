@@ -21,7 +21,7 @@ import (
 type PostRequestData struct {
 	Name     string `json:"name"`
 	Filename string `json:"filename"`
-	ToFolder uint64 `json:"toFolder"`
+	FolderID uint64 `json:"folderID"`
 	Filesize uint64 `json:"filesize"`
 	Checksum uint32 `json:"checksum"`
 }
@@ -72,26 +72,17 @@ var Post = session.Authenticate(
 		}
 
 		if utf8.RuneCountInString(requestData.Name) == 0 {
-			log.NotifyError(
-				errors.New(`Missing JSON parameter: name`),
-				http.StatusBadRequest,
-			)
+			log.NotifyError(errors.New(`Missing JSON parameter: name`), http.StatusBadRequest)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
 			return
 		}
 		if utf8.RuneCountInString(requestData.Filename) == 0 {
-			log.NotifyError(
-				errors.New(`Missing JSON parameter: filename`),
-				http.StatusBadRequest,
-			)
+			log.NotifyError(errors.New(`Missing JSON parameter: filename`), http.StatusBadRequest)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
 			return
 		}
-		if requestData.ToFolder == 0 {
-			log.NotifyError(
-				errors.New(`Missing JSON parameter: toFolder`),
-				http.StatusBadRequest,
-			)
+		if requestData.FolderID == 0 {
+			log.NotifyError(errors.New(`Missing JSON parameter: folderID`), http.StatusBadRequest)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
 			return
 		}
@@ -100,11 +91,11 @@ var Post = session.Authenticate(
 		responseData.FileID, err = modelfile.PostFile(
 			requestData.Name,
 			requestData.Filename,
-			requestData.ToFolder,
+			requestData.FolderID,
 			requestData.Filesize,
 			requestData.Checksum,
-			s.AccountID,
 			s.UserID,
+			s.AccountID,
 		)
 		if err != nil {
 			log.NotifyError(err, http.StatusInternalServerError)
