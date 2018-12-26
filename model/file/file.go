@@ -7,10 +7,10 @@ import (
 )
 
 //
-// PostFile saves a notification of a file upload to the database and
+// NotifyFileUpload saves a notification of a file upload to the database and
 // generates a file upload id.
 //
-func PostFile(
+func NotifyFileUpload(
 	name,
 	filename string,
 	folderID,
@@ -114,15 +114,18 @@ func MarkFileAsUploaded(
 ) error {
 
 	const query = `
-		update t_file
-		set c_is_uploaded = 1,
-		c_filesize = ?,
-		c_checksum = ?
-		where c_id = ?
-		and c_account_id = ?
-		and c_modified_by_user_id = ?
-		and c_is_uploaded = 0
-		and c_is_processed = 0
+		insert into t_file (
+			c_account_id,
+			c_folder_id,
+			c_has_preview,
+			c_type,
+			c_name,
+			c_filename,
+			c_filesize,
+			c_checksum,
+			c_created_by_user_id,
+			c_modified_by_user_id,
+		)
 	`
 
 	db := mysql.Open()

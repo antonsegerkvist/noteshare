@@ -108,8 +108,8 @@ drop table if exists `t_folder_history`;
 create table `t_folder_history` (
   `c_id`           bigint (10) unsigned not null auto_increment,
   `c_file_id`      bigint (10) unsigned not null,
-  `c_message`      text                 not null,
-  `c_created_date` datetime             not null default CURRENT_TIMESTAMP,
+  `c_message`      text     not null,
+  `c_created_date` datetime not null default CURRENT_TIMESTAMP,
   primary key (`c_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -160,7 +160,7 @@ drop table if exists `t_file_history`;
 create table `t_file_history` (
   `c_id`           bigint (10) unsigned not null auto_increment,
   `c_file_id`      bigint (10) unsigned not null,
-  `c_message`      text                 not null,
-  `c_created_date` datetime             not null default CURRENT_TIMESTAMP,
+  `c_message`      text     not null,
+  `c_created_date` datetime not null default CURRENT_TIMESTAMP,
   primary key (`c_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

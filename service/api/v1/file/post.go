@@ -88,7 +88,7 @@ var Post = session.Authenticate(
 		}
 
 		responseData := PostResponseData{}
-		responseData.FileID, err = modelfile.PostFile(
+		responseData.FileID, err = modelfile.NotifyFileUpload(
 			requestData.Name,
 			requestData.Filename,
 			requestData.FolderID,
