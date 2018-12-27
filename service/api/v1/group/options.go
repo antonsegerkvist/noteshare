@@ -1,4 +1,4 @@
-package me
+package group
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ import (
 func Options(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	if config.BuildDebug == true {
-		fmt.Println(`==> OPTIONS: ` + r.URL.Path)
+		fmt.Println(`==> OPTIONS: /service/api/v1/account/me`)
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
