@@ -1,4 +1,4 @@
-package all
+package me
 
 import (
 	"encoding/json"
@@ -6,12 +6,13 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/log"
-	modelgroup "github.com/noteshare/model/group"
+	modelgroups "github.com/noteshare/model/group"
 	"github.com/noteshare/session"
 )
 
 //
-// Get fetches a list of all groups in an account.
+// Get fetches a list of all groups the user associated with the current access
+// token is part of.
 //
 func Get(
 	w http.ResponseWriter,
@@ -20,7 +21,8 @@ func Get(
 	s session.Session,
 ) {
 
-	groups, err := modelgroup.GetAllGroups(
+	groups, err := modelgroups.GetUserGroups(
+		s.UserID,
 		s.UserID,
 		s.AccountID,
 	)

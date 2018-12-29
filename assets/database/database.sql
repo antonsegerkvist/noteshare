@@ -50,9 +50,10 @@ create table `t_group` (
 
 drop table if exists `t_user_belongs_to_group`;
 create table `t_user_belongs_to_group` (
-  `c_id`       bigint (10) unsigned not null auto_increment,
-  `c_user_id`  bigint (10) unsigned not null,
-  `c_group_id` bigint (10) unsigned not null,
+  `c_id`         bigint (10) unsigned not null auto_increment,
+  `c_account_id` bigint (10) unsigned not null,
+  `c_user_id`    bigint (10) unsigned not null,
+  `c_group_id`   bigint (10) unsigned not null,
   primary key (`c_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

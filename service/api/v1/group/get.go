@@ -6,6 +6,9 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
+	groupall "github.com/noteshare/service/api/v1/group/all"
+	groupme "github.com/noteshare/service/api/v1/group/me"
+	grouppermission "github.com/noteshare/service/api/v1/group/permission"
 	"github.com/noteshare/session"
 )
 
@@ -26,9 +29,14 @@ var Get = session.Authenticate(
 		}
 
 		switch p.ByName("id") {
-		case "me":
-			break
 		case "all":
+			groupall.Get(w, r, p, s)
+			break
+		case "me":
+			groupme.Get(w, r, p, s)
+			break
+		case "permission":
+			grouppermission.Get(w, r, p, s)
 			break
 		}
 
