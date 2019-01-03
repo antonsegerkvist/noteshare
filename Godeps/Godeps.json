@@ -20,11 +20,6 @@
 			"ImportPath": "github.com/gorilla/mux",
 			"Comment": "v1.6.2-18-gef912dd",
 			"Rev": "ef912dd76ebe9d9848c6e0fd80eaebccc9a11631"
-		},
-		{
-			"ImportPath": "github.com/julienschmidt/httprouter",
-			"Comment": "v1.1-64-g348b672",
-			"Rev": "348b672cd90d8190f8240323e372ecd1e66b59dc"
 		}
 	]
 }
