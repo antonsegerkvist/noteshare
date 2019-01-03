@@ -11,7 +11,8 @@ import (
 	"path"
 	"strconv"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
+
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
 	modelfile "github.com/noteshare/model/file"
@@ -33,7 +34,6 @@ var Post = session.Authenticate(
 	func(
 		w http.ResponseWriter,
 		r *http.Request,
-		p httprouter.Params,
 		s session.Session,
 	) {
 
@@ -41,7 +41,7 @@ var Post = session.Authenticate(
 			fmt.Println(`==> POST: /service/file/v1/upload/:fid`)
 		}
 
-		fileID, err := strconv.ParseUint(p.ByName("fid"), 10, 64)
+		fileID, err := strconv.ParseUint(mux.Vars(r)["fid"], 10, 64)
 		if err != nil {
 			log.NotifyError(err, http.StatusBadRequest)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)

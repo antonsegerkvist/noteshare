@@ -3,7 +3,7 @@
 	"GoVersion": "go1.9",
 	"GodepVersion": "v80",
 	"Packages": [
-		"./cmd/noteshare"
+		"./cmd/noteshare/"
 	],
 	"Deps": [
 		{
@@ -15,6 +15,11 @@
 			"ImportPath": "github.com/go-sql-driver/mysql",
 			"Comment": "v1.4.0-5-g99ff426",
 			"Rev": "99ff426eb706cffe92ff3d058e168b278cabf7c7"
+		},
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Comment": "v1.6.2-18-gef912dd",
+			"Rev": "ef912dd76ebe9d9848c6e0fd80eaebccc9a11631"
 		},
 		{
 			"ImportPath": "github.com/julienschmidt/httprouter",

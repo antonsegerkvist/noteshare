@@ -2,9 +2,10 @@ package all
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/noteshare/config"
 	"github.com/noteshare/log"
 	modelgroup "github.com/noteshare/model/group"
 	"github.com/noteshare/session"
@@ -13,30 +14,35 @@ import (
 //
 // Get fetches a list of all groups in an account.
 //
-func Get(
-	w http.ResponseWriter,
-	r *http.Request,
-	p httprouter.Params,
-	s session.Session,
-) {
+var Get = session.Authenticate(
+	func(
+		w http.ResponseWriter,
+		r *http.Request,
+		s session.Session,
+	) {
 
-	groups, err := modelgroup.GetAllGroups(
-		s.UserID,
-		s.AccountID,
-	)
-	if err != nil {
-		log.NotifyError(err, http.StatusInternalServerError)
-		log.RespondJSON(w, `{}`, http.StatusInternalServerError)
-		return
-	}
+		if config.BuildDebug == true {
+			fmt.Println(`==> GET: ` + r.URL.Path)
+		}
 
-	jsonBody, err := json.Marshal(groups)
-	if err != nil {
-		log.NotifyError(err, http.StatusInternalServerError)
-		log.RespondJSON(w, `{}`, http.StatusInternalServerError)
-		return
-	}
+		groups, err := modelgroup.GetAllGroups(
+			s.UserID,
+			s.AccountID,
+		)
+		if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
+			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
+			return
+		}
 
-	log.RespondJSON(w, string(jsonBody), http.StatusOK)
+		jsonBody, err := json.Marshal(groups)
+		if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
+			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
+			return
+		}
 
-}
+		log.RespondJSON(w, string(jsonBody), http.StatusOK)
+
+	},
+)

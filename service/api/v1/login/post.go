@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
 	"github.com/noteshare/model/user"
@@ -40,7 +39,7 @@ func (post *PostData) ParseRequestBody(request *http.Request) error {
 //
 // Post handles login requests.
 //
-func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func Post(w http.ResponseWriter, r *http.Request) {
 
 	if config.BuildDebug == true {
 		fmt.Println(`==> POST: ` + r.URL.Path)

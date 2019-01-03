@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"unicode/utf8"
 
-	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
 	modelfile "github.com/noteshare/model/file"
@@ -49,7 +48,6 @@ var Post = session.Authenticate(
 	func(
 		w http.ResponseWriter,
 		r *http.Request,
-		p httprouter.Params,
 		s session.Session,
 	) {
 

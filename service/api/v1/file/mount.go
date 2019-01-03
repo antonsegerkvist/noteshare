@@ -1,11 +1,11 @@
 package file
 
-import "github.com/julienschmidt/httprouter"
+import "github.com/gorilla/mux"
 
 //
 // Mount mounts the get folder endpoint to the specified router.
 //
-func Mount(router *httprouter.Router) {
-	router.OPTIONS("/service/api/v1/file", Options)
-	router.POST("/service/api/v1/file", Post)
+func Mount(router *mux.Router) {
+	router.HandleFunc("/service/api/v1/file", Options).Methods("OPTIONS")
+	router.HandleFunc("/service/api/v1/file", Post).Methods("POST")
 }

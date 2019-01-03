@@ -1,10 +1,10 @@
 package file
 
-import "github.com/julienschmidt/httprouter"
+import "github.com/gorilla/mux"
 
 //
 // Mount takes a router object and assigns the download file handler to it.
 //
-func Mount(router *httprouter.Router) {
+func Mount(router *mux.Router) {
 
 }

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
 	"github.com/noteshare/session"
@@ -14,7 +13,7 @@ import (
 //
 // Post handles renewing of authentication tokens.
 //
-func Post(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func Post(w http.ResponseWriter, r *http.Request) {
 
 	if config.BuildDebug == true {
 		fmt.Println(`==> POST: ` + r.URL.Path)

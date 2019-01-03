@@ -1,11 +1,12 @@
-package folder
+package id
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
 	modelfolder "github.com/noteshare/model/folder"
@@ -13,28 +14,28 @@ import (
 )
 
 //
-// Delete handles deletion of single folder.
+// Get returns the folders that are children to the specified folders that the
+// user has access to.
 //
-var Delete = session.Authenticate(
+var Get = session.Authenticate(
 	func(
 		w http.ResponseWriter,
 		r *http.Request,
-		p httprouter.Params,
 		s session.Session,
 	) {
 
 		if config.BuildDebug == true {
-			fmt.Println(`==> DELETE: ` + r.URL.Path)
+			fmt.Println(`==> GET: ` + r.URL.Path)
 		}
 
-		folderID, err := strconv.ParseUint(p.ByName("id"), 10, 64)
+		folderID, err := strconv.ParseUint(mux.Vars(r)["id"], 10, 64)
 		if err != nil {
 			log.NotifyError(err, http.StatusBadRequest)
 			log.RespondJSON(w, `{}`, http.StatusBadRequest)
 			return
 		}
 
-		err = modelfolder.DeleteFolder(
+		folders, err := modelfolder.GetFolderChildren(
 			folderID,
 			s.UserID,
 			s.AccountID,
@@ -45,7 +46,14 @@ var Delete = session.Authenticate(
 			return
 		}
 
-		log.RespondJSON(w, `{}`, http.StatusOK)
+		jsonBody, err := json.Marshal(folders)
+		if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
+			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
+			return
+		}
+
+		log.RespondJSON(w, string(jsonBody), http.StatusOK)
 
 	},
 )

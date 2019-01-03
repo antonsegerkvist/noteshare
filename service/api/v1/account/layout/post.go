@@ -7,7 +7,6 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
 	modellayout "github.com/noteshare/model/account"
@@ -40,7 +39,6 @@ var Post = session.Authenticate(
 	func(
 		w http.ResponseWriter,
 		r *http.Request,
-		p httprouter.Params,
 		s session.Session,
 	) {
 

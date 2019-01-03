@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
 	modelaccount "github.com/noteshare/model/account"
@@ -19,7 +18,6 @@ var Get = session.Authenticate(
 	func(
 		w http.ResponseWriter,
 		r *http.Request,
-		p httprouter.Params,
 		s session.Session,
 	) {
 

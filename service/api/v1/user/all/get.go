@@ -1,27 +1,23 @@
-package folder
+package all
 
 import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
-	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
-	modelfolder "github.com/noteshare/model/folder"
+	modeluser "github.com/noteshare/model/user"
 	"github.com/noteshare/session"
 )
 
 //
-// Get returns the folders that are children to the specified folders that the
-// user has access to.
+// Get returns the users that are in the same account.
 //
 var Get = session.Authenticate(
 	func(
 		w http.ResponseWriter,
 		r *http.Request,
-		p httprouter.Params,
 		s session.Session,
 	) {
 
@@ -29,25 +25,14 @@ var Get = session.Authenticate(
 			fmt.Println(`==> GET: ` + r.URL.Path)
 		}
 
-		folderID, err := strconv.ParseUint(p.ByName("id"), 10, 64)
-		if err != nil {
-			log.NotifyError(err, http.StatusBadRequest)
-			log.RespondJSON(w, `{}`, http.StatusBadRequest)
-			return
-		}
-
-		folders, err := modelfolder.GetFolderChildren(
-			folderID,
-			s.UserID,
-			s.AccountID,
-		)
+		users, err := modeluser.GetUsers(s.AccountID)
 		if err != nil {
 			log.NotifyError(err, http.StatusInternalServerError)
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 			return
 		}
 
-		jsonBody, err := json.Marshal(folders)
+		jsonBody, err := json.Marshal(users)
 		if err != nil {
 			log.NotifyError(err, http.StatusInternalServerError)
 			log.RespondJSON(w, `{}`, http.StatusInternalServerError)

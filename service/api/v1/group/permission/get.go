@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
 	"github.com/noteshare/model/permission"
@@ -16,45 +15,46 @@ import (
 //
 // Get handles fetching of specific user permissions.
 //
-func Get(
-	w http.ResponseWriter,
-	r *http.Request,
-	p httprouter.Params,
-	s session.Session,
-) {
+var Get = session.Authenticate(
+	func(
+		w http.ResponseWriter,
+		r *http.Request,
+		s session.Session,
+	) {
 
-	if config.BuildDebug == true {
-		fmt.Println(`==> GET: ` + r.URL.Path)
-	}
+		if config.BuildDebug == true {
+			fmt.Println(`==> GET: ` + r.URL.Path)
+		}
 
-	var keys = []uint32{}
-	queries := r.URL.Query()
-	permissions := queries["key"]
+		var keys = []uint32{}
+		queries := r.URL.Query()
+		permissions := queries["key"]
 
-	for _, v := range permissions {
-		key, err := strconv.ParseUint(v, 10, 32)
+		for _, v := range permissions {
+			key, err := strconv.ParseUint(v, 10, 32)
+			if err != nil {
+				log.NotifyError(err, http.StatusBadRequest)
+				log.RespondJSON(w, `{}`, http.StatusBadRequest)
+				return
+			}
+			keys = append(keys, uint32(key))
+		}
+
+		permissionJSON, err := permission.LookupGroupPermissionJSON(keys, &s)
 		if err != nil {
-			log.NotifyError(err, http.StatusBadRequest)
-			log.RespondJSON(w, `{}`, http.StatusBadRequest)
+			log.NotifyError(err, http.StatusInternalServerError)
+			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
 			return
 		}
-		keys = append(keys, uint32(key))
-	}
 
-	permissionJSON, err := permission.LookupGroupPermissionJSON(keys, &s)
-	if err != nil {
-		log.NotifyError(err, http.StatusInternalServerError)
-		log.RespondJSON(w, `{}`, http.StatusInternalServerError)
-		return
-	}
+		jsonBytes, err := json.Marshal(*permissionJSON)
+		if err != nil {
+			log.NotifyError(err, http.StatusInternalServerError)
+			log.RespondJSON(w, `{}`, http.StatusInternalServerError)
+			return
+		}
 
-	jsonBytes, err := json.Marshal(*permissionJSON)
-	if err != nil {
-		log.NotifyError(err, http.StatusInternalServerError)
-		log.RespondJSON(w, `{}`, http.StatusInternalServerError)
-		return
-	}
+		log.RespondJSON(w, string(jsonBytes), http.StatusOK)
 
-	log.RespondJSON(w, string(jsonBytes), http.StatusOK)
-
-}
+	},
+)

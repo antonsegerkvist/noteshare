@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
 )
@@ -13,7 +12,7 @@ import (
 // Options simply tells the client which methods, headers and origins
 // are allowed.
 //
-func Options(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func Options(w http.ResponseWriter, r *http.Request) {
 
 	if config.BuildDebug == true {
 		fmt.Println(`==> OPTIONS: ` + r.URL.Path)

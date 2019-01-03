@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
 	"github.com/noteshare/config"
 	"github.com/noteshare/log"
 )
@@ -16,7 +15,6 @@ import (
 type Handle func(
 	http.ResponseWriter,
 	*http.Request,
-	httprouter.Params,
 	Session,
 )
 
@@ -24,8 +22,8 @@ type Handle func(
 // Authenticate is a handle for authenticating the user. The provided handle
 // is called if the user is authenticated.
 //
-func Authenticate(s Handle) httprouter.Handle {
-	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func Authenticate(s Handle) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie(config.SessionCookieName)
 		if err != nil {
 			log.NotifyError(err, http.StatusUnauthorized)
@@ -42,7 +40,7 @@ func Authenticate(s Handle) httprouter.Handle {
 			return
 		}
 
-		s(w, r, p, session)
+		s(w, r, session)
 	}
 }
 
@@ -50,8 +48,8 @@ func Authenticate(s Handle) httprouter.Handle {
 // FileSystemAuthenticate is a handler that checks the user authentication
 // token before letting the the handle serve the actual content.
 //
-func FileSystemAuthenticate(s httprouter.Handle, redirectURL string) httprouter.Handle {
-	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func FileSystemAuthenticate(s http.HandlerFunc, redirectURL string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie(config.SessionCookieName)
 		if err != nil {
 			http.Redirect(w, r, redirectURL, http.StatusTemporaryRedirect)
@@ -91,6 +89,6 @@ func FileSystemAuthenticate(s httprouter.Handle, redirectURL string) httprouter.
 
 		}
 
-		s(w, r, p)
+		s(w, r)
 	}
 }
