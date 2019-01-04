@@ -17,6 +17,7 @@ import (
 	service_api_v1_folder_rename "github.com/noteshare/service/api/v1/folder/rename"
 
 	service_api_v1_group_all "github.com/noteshare/service/api/v1/group/all"
+	service_api_v1_group_id "github.com/noteshare/service/api/v1/group/id"
 	service_api_v1_group_me "github.com/noteshare/service/api/v1/group/me"
 	service_api_v1_group_permission "github.com/noteshare/service/api/v1/group/permission"
 
@@ -29,7 +30,7 @@ import (
 	service_api_v1_user_me "github.com/noteshare/service/api/v1/user/me"
 
 	service_file_v1_download "github.com/noteshare/service/file/v1/download"
-	service_file_v1_upload "github.com/noteshare/service/file/v1/upload"
+	service_file_v1_upload_id "github.com/noteshare/service/file/v1/upload/id"
 )
 
 //
@@ -51,6 +52,7 @@ func Run() {
 	service_api_v1_folder_rename.Mount(router)
 
 	service_api_v1_group_all.Mount(router)
+	service_api_v1_group_id.Mount(router)
 	service_api_v1_group_me.Mount(router)
 	service_api_v1_group_permission.Mount(router)
 
@@ -63,7 +65,7 @@ func Run() {
 	service_api_v1_user_me.Mount(router)
 
 	service_file_v1_download.Mount(router)
-	service_file_v1_upload.Mount(router)
+	service_file_v1_upload_id.Mount(router)
 
 	log.Fatal(http.ListenAndServe(":8081", router))
 

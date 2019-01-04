@@ -22,6 +22,41 @@ type ModelGroups struct {
 }
 
 //
+// GetGroup returns a single group from the specified group id.
+//
+func GetGroup(groupID, userID, accountID uint64) (*ModelGroup, error) {
+
+	const query = `
+		select c_id, c_name
+		from t_group
+		where c_id = ? and c_account_id = ?
+	`
+
+	db := mysql.Open()
+
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	group := ModelGroup{}
+
+	row := stmt.QueryRow(groupID, accountID)
+	err = row.Scan(
+		&group.ID,
+		&group.Name,
+	)
+	if err == sql.ErrNoRows {
+		return nil, ErrGroupNotFound
+	} else if err != nil {
+		return nil, err
+	}
+
+	return &group, nil
+}
+
+//
 // GetAllGroups returns a list of all groups in the same account.
 //
 func GetAllGroups(userID, accountID uint64) (*ModelGroups, error) {
