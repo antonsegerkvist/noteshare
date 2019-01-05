@@ -4,7 +4,13 @@ NoteShare is an application for easily creating and sharing documents of differe
 
 # Table of Contents
 
-1. [API specification](#api-specification)
+1. [Previews](#previews)
+2. [API specification](#api-specification)
+
+## Previews
+
+### Login page
+![Login Page](assets/github/login-page.png)
 
 ## API specification
 

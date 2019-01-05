@@ -33,6 +33,7 @@
 
 <script>
 import Vue from 'vue'
+import { mapState } from 'vuex'
 export default Vue.extend({
 
   methods: {
@@ -46,6 +47,10 @@ export default Vue.extend({
   },
 
   computed: {
+
+    ...mapState('user', [
+      'me'
+    ]),
 
     getHeaderTitle () {
       switch (this.$route.params.lang) {

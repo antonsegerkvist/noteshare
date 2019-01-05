@@ -1,10 +1,10 @@
 const state = {
 
   //
-  // User information.
+  // Logged in user information.
   //
 
-  user: {}
+  me: {}
 
 }
 

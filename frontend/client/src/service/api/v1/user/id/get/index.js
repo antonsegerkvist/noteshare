@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export function ServiceApiV1UserGet (userID) {
+export function ServiceApiV1UserIDGet (userID) {
   return new Promise((resolve, reject) => {
     axios({
       method: 'GET',

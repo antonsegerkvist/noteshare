@@ -8,6 +8,8 @@
 import Vue from 'vue'
 import axios from 'axios'
 
+import { mapActions } from 'vuex'
+
 import { ServiceApiV1LoginCheckPost } from '@/service/api/v1/login/check/post'
 import { ServiceApiV1LoginRenewPost } from '@/service/api/v1/login/renew/post'
 
@@ -36,8 +38,20 @@ export default Vue.extend({
       }
     })
     ServiceApiV1LoginCheckPost()
-      .then(() => {})
+      .then(() => { this.init() })
       .catch(() => {})
+  },
+
+  methods: {
+
+    ...mapActions('user', [
+      'fetchUserMe'
+    ]),
+
+    init () {
+      this.fetchUserMe()
+    }
+
   }
 
 })

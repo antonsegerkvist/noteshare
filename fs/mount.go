@@ -14,6 +14,6 @@ func Mount(router *mux.Router) {
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/frontend/", http.StatusTemporaryRedirect)
 	}).Methods("GET")
-	router.HandleFunc("/login/*filepath", GetLogin).Methods("GET")
-	router.HandleFunc("/frontend/*filepath", session.FileSystemAuthenticate(GetClient, "/login/")).Methods("GET")
+	router.PathPrefix("/login").HandlerFunc(GetLogin).Methods("GET")
+	router.PathPrefix("/frontend").HandlerFunc(session.FileSystemAuthenticate(GetClient, "/login/")).Methods("GET")
 }
