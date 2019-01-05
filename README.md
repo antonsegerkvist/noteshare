@@ -18,6 +18,34 @@ The following section contains a specification of the endpoints in the noteshare
 
 ---
 
+### Endpoint overview
+
+```http
+GET    /service/api/v1/account/layout
+GET    /service/api/v1/account/me
+
+POST   /service/api/v1/file
+
+DELETE /service/api/v1/folder/{id:[0-9]+}
+GET    /service/api/v1/folder/{id:[0-9]+}
+POST   /service/api/v1/folder/{id:[0-9]+}
+PATCH  /service/api/v1/folder/move
+PATCH  /service/api/v1/folder/rename
+
+GET    /service/api/v1/group/all
+GET    /service/api/v1/group/{id:[0-9]+}
+GET    /service/api/v1/group/me
+GET    /service/api/v1/group/permission?key={kid:[0-9]+}
+
+POST   /service/api/v1/login
+POST   /service/api/v1/login/check
+POST   /service/api/v1/login/renew
+
+POST   /service/api/v1/upload/{fid:[0-9]+}
+```
+
+---
+
 ### Get a JSON object representing the structure and content of an account frontpage.
 
 ```http
