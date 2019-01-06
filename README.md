@@ -29,6 +29,7 @@ POST   /service/api/v1/file
 DELETE /service/api/v1/folder/{id:[0-9]+}
 GET    /service/api/v1/folder/{id:[0-9]+}
 POST   /service/api/v1/folder/{id:[0-9]+}
+GET    /service/api/v1/folder/{id:[0-9]+}/file
 PATCH  /service/api/v1/folder/move
 PATCH  /service/api/v1/folder/rename
 
