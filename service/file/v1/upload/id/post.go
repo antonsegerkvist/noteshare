@@ -38,7 +38,7 @@ var Post = session.Authenticate(
 	) {
 
 		if config.BuildDebug == true {
-			fmt.Println(`==> POST: /service/file/v1/upload/:fid`)
+			fmt.Println(`==> POST: ` + r.URL.Path)
 		}
 
 		fileID, err := strconv.ParseUint(mux.Vars(r)["fid"], 10, 64)
@@ -48,7 +48,7 @@ var Post = session.Authenticate(
 			return
 		}
 
-		filesize, checksum, err := modelfile.LookupUploadFile(fileID, s.UserID, s.AccountID)
+		uploadFile, err := modelfile.LookupUploadFile(fileID, s.UserID, s.AccountID)
 		if err == modelfile.ErrFileNotFound {
 			log.NotifyError(err, http.StatusNotFound)
 			log.RespondJSON(w, `{}`, http.StatusNotFound)
@@ -96,7 +96,7 @@ var Post = session.Authenticate(
 		}
 		checksumOK := adler32Hash.Sum32()
 
-		if filesize != 0 && filesize != uint64(filesizeOK) {
+		if uploadFile.Filesize != 0 && uploadFile.Filesize != uint64(filesizeOK) {
 			log.NotifyError(
 				errors.New(`Filesize missmatch`),
 				http.StatusBadRequest,
@@ -105,7 +105,7 @@ var Post = session.Authenticate(
 			return
 		}
 
-		if checksum != 0 && checksum != uint32(checksumOK) {
+		if uploadFile.Checksum != 0 && uploadFile.Checksum != uint32(checksumOK) {
 			log.NotifyError(
 				errors.New(`Checksum missmatch`),
 				http.StatusBadRequest,
@@ -116,6 +116,9 @@ var Post = session.Authenticate(
 
 		err = modelfile.MarkFileAsUploaded(
 			fileID,
+			uploadFile.FolderID,
+			uploadFile.Name,
+			uploadFile.Filename,
 			uint64(filesizeOK),
 			uint32(checksumOK),
 			s.UserID,

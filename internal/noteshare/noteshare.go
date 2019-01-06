@@ -13,6 +13,7 @@ import (
 	service_api_v1_file "github.com/noteshare/service/api/v1/file"
 
 	service_api_v1_folder_id "github.com/noteshare/service/api/v1/folder/id"
+	service_api_v1_folder_id_file "github.com/noteshare/service/api/v1/folder/id/file"
 	service_api_v1_folder_move "github.com/noteshare/service/api/v1/folder/move"
 	service_api_v1_folder_rename "github.com/noteshare/service/api/v1/folder/rename"
 
@@ -48,6 +49,7 @@ func Run() {
 	service_api_v1_file.Mount(router)
 
 	service_api_v1_folder_id.Mount(router)
+	service_api_v1_folder_id_file.Mount(router)
 	service_api_v1_folder_move.Mount(router)
 	service_api_v1_folder_rename.Mount(router)
 

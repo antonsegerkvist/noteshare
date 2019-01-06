@@ -7,13 +7,24 @@ import (
 )
 
 //
+// ModelFileUpload contains information about a file upload.
+//
+type ModelFileUpload struct {
+	FolderID uint64 `json:"folderID"`
+	Name     string `json:"name"`
+	Filename string `json:"filename"`
+	Filesize uint64 `json:"filesize"`
+	Checksum uint32 `json:"checksum"`
+}
+
+//
 // NotifyFileUpload saves a notification of a file upload to the database and
 // generates a file upload id.
 //
 func NotifyFileUpload(
+	folderID uint64,
 	name,
 	filename string,
-	folderID,
 	filesize uint64,
 	checksum uint32,
 	userID,
@@ -64,41 +75,44 @@ func LookupUploadFile(
 	fileID,
 	userID,
 	accountID uint64,
-) (uint64, uint32, error) {
+) (*ModelFileUpload, error) {
 
 	const query = `
-		select c_filesize, c_checksum
+		select c_folder_id, c_name, c_filename, c_filesize, c_checksum
 		from t_file_upload
 		where c_id = ?
 		and c_account_id = ?
 		and c_user_id = ?
-		and c_is_uploaded = 0
-		and c_is_processed = 0
 	`
 
 	db := mysql.Open()
 
 	stmt, err := db.Prepare(query)
 	if err != nil {
-		return 0, 0, err
+		return nil, err
 	}
 	defer stmt.Close()
 
-	var filesize uint64
-	var checksum uint32
+	ret := ModelFileUpload{}
 	row := stmt.QueryRow(
 		fileID,
 		accountID,
 		userID,
 	)
-	err = row.Scan(&filesize, &checksum)
+	err = row.Scan(
+		&ret.FolderID,
+		&ret.Name,
+		&ret.Filename,
+		&ret.Filesize,
+		&ret.Checksum,
+	)
 	if err == sql.ErrNoRows {
-		return 0, 0, ErrFileNotFound
+		return nil, ErrFileNotFound
 	} else if err != nil {
-		return 0, 0, err
+		return nil, err
 	}
 
-	return filesize, checksum, nil
+	return &ret, nil
 
 }
 
@@ -107,40 +121,64 @@ func LookupUploadFile(
 //
 func MarkFileAsUploaded(
 	fileID,
+	folderID uint64,
+	name string,
+	filename string,
 	filesize uint64,
 	checksum uint32,
 	userID,
 	accountID uint64,
 ) error {
 
-	const query = `
+	const deleteQuery = `
+		delete from t_file_upload
+		where c_id = ? and c_account_id = ? and c_user_id = ?
+	`
+
+	const insertQuery = `
 		insert into t_file (
 			c_account_id,
 			c_folder_id,
-			c_has_preview,
-			c_type,
 			c_name,
 			c_filename,
 			c_filesize,
 			c_checksum,
 			c_created_by_user_id,
-			c_modified_by_user_id,
-		)
+			c_modified_by_user_id
+		) values (?, ?, ?, ?, ?, ?, ?, ?)
 	`
 
 	db := mysql.Open()
 
-	stmt, err := db.Prepare(query)
+	deleteStmt, err := db.Prepare(deleteQuery)
 	if err != nil {
 		return err
 	}
-	defer stmt.Close()
+	defer deleteStmt.Close()
 
-	_, err = stmt.Exec(
-		filesize,
-		checksum,
+	insertStmt, err := db.Prepare(insertQuery)
+	if err != nil {
+		return err
+	}
+	defer insertStmt.Close()
+
+	_, err = deleteStmt.Exec(
 		fileID,
 		accountID,
+		userID,
+	)
+	if err != nil {
+		return err
+	}
+
+	_, err = insertStmt.Exec(
+		accountID,
+		folderID,
+		name,
+		filename,
+		filesize,
+		checksum,
+		userID,
 		userID,
 	)
 	if err != nil {

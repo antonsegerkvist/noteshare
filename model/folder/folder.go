@@ -20,6 +20,16 @@ type ModelFolder struct {
 }
 
 //
+// ModelFile contains information of a single file.
+//
+type ModelFile struct {
+	ID         uint64 `json:"id"`
+	Name       string `json:"name"`
+	Filename   string `json:"filename"`
+	HasPreview bool   `json:"hasPreview"`
+}
+
+//
 // GetFolderChildren returns a list of folder with the specified folder
 // id as a parent.
 //
@@ -40,6 +50,7 @@ func GetFolderChildren(
 	if err != nil {
 		return nil, err
 	}
+	defer stmt.Close()
 
 	rows, err := stmt.Query(folderID, accountID)
 	if err == sql.ErrNoRows {
@@ -47,6 +58,7 @@ func GetFolderChildren(
 	} else if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	ret := []ModelFolder{}
 	for rows.Next() {
@@ -67,6 +79,59 @@ func GetFolderChildren(
 	}
 
 	return &ret, nil
+}
+
+//
+// GetFolderFiles returns a list of files contained within a folder.
+//
+func GetFolderFiles(
+	folderID,
+	userID,
+	accountID uint64,
+) (*[]ModelFile, error) {
+
+	const query = `
+		select c_id, c_name, c_filename, c_has_preview
+		from t_file
+		where c_folder_id = ? and c_account_id = ?
+	`
+
+	db := mysql.Open()
+
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query(
+		folderID,
+		accountID,
+	)
+	if err == sql.ErrNoRows {
+		return &[]ModelFile{}, nil
+	} else if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	ret := []ModelFile{}
+	for rows.Next() {
+		buffer := ModelFile{}
+		err = rows.Scan(
+			&buffer.ID,
+			&buffer.Name,
+			&buffer.Filename,
+			&buffer.HasPreview,
+		)
+		if err != nil {
+			return nil, err
+		}
+		ret = append(ret, buffer)
+	}
+
+	return &ret, nil
+
 }
 
 //
