@@ -1,18 +1,15 @@
-import { ServiceApiV1FileGet } from '@/service/api/v1/file/get'
-import { ServiceApiV1FolderGet } from '@/service/api/v1/folder/get'
+import { ServiceApiV1FolderIDGet } from '@/service/api/v1/folder/id/get'
 
 const actions = {
 
   fetchFolderChildren ({ state }, folderID) {
-    ServiceApiV1FolderGet(folderID)
-      .then(response => {})
-      .catch(() => {})
-  },
-
-  fetchFolderFiles ({ state }, folderID) {
-    ServiceApiV1FileGet(folderID)
-      .then(response => {})
-      .catch(() => {})
+    ServiceApiV1FolderIDGet(folderID)
+      .then(response => {
+        state.folders[folderID] = response
+      })
+      .catch(() => {
+        state.folders[folderID] = []
+      })
   }
 
 }

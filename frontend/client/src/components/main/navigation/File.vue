@@ -12,31 +12,28 @@
 
 <script>
 import Vue from 'vue'
-import { ServiceApiV1FolderGet } from '@/service/api/v1/folder/get'
+import { mapActions, mapState } from 'vuex'
 export default Vue.extend({
 
-  data () {
-    return {
-      folderTree: {},
-      folderTreeError: undefined
-    }
+  created () {
+    this.fetchFolderChildren(0)
   },
 
-  created () {
-    ServiceApiV1FolderGet(0)
-      .then(response => {
-        console.log(response)
-        if (response && response.length) {
-          let obj = {}
-          obj[0] = response
-          this.folderTree = obj
-        }
-        this.folderTreeError = undefined
-      })
-      .catch(() => {})
+  methods: {
+
+    ...mapActions('file', [
+      'fetchFolderChildren'
+    ])
+
   },
 
   computed: {
+
+    ...mapState('file', [
+      'currentFolder',
+      'files',
+      'folders'
+    ]),
 
     getAddFolderTitle () {
       switch (this.$route.params.lang) {

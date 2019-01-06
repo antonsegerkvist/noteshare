@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-export function ServiceApiV1FileGet (folderID) {
+export function ServiceApiV1FolderIDGet (folderID) {
   return new Promise((resolve, reject) => {
     axios({
-      method: 'POST',
-      url: `/service/api/v1/file/${folderID}`,
+      method: 'GET',
+      url: `/service/api/v1/folder/${folderID}`,
       validateStatus (status) {
         const validStatusCodes = [200]
         return validStatusCodes.indexOf(status) !== -1
